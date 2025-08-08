@@ -1,0 +1,1598 @@
+<definitions targetNamespace="net.atende" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="net.atende" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+   <types>
+      <xsd:schema targetNamespace="net.atende">
+         <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+         <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+         <xsd:complexType name="proprietarios">
+            <xsd:all>
+               <xsd:element name="codigo" type="xsd:string"/>
+               <xsd:element name="tipo_proprietario" type="xsd:int"/>
+               <xsd:element name="situacao" type="xsd:int"/>
+               <xsd:element name="percentual" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaProprietarios">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:proprietarios[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoAlteraProp">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="proprietarios_ativos" type="tns:listaProprietarios" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaAlteraProp">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="endereco" type="xsd:int"/>
+               <xsd:element name="proprietarios" type="tns:listaProprietarios" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="proprietariosbci">
+            <xsd:all>
+               <xsd:element name="codigo_pessoa" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="tipo_proprietario" type="xsd:int"/>
+               <xsd:element name="situacao" type="xsd:int"/>
+               <xsd:element name="percentual" type="xsd:string" nillable="true"/>
+               <xsd:element name="data_ini_vigencia" type="xsd:date" nillable="true"/>
+               <xsd:element name="data_fim_vigencia" type="xsd:date" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaProprietariosbci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:proprietariosbci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaProp">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="proprietarios" type="tns:listaProprietariosbci" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaProp">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="data_inicio_vigencia" type="xsd:date" nillable="true"/>
+               <xsd:element name="data_fim_vigencia" type="xsd:date" nillable="true"/>
+               <xsd:element name="situacao" type="xsd:int" nillable="true"/>
+               <xsd:element name="inscricao_imobiliaria" type="xsd:string" nillable="true"/>
+               <xsd:element name="tipo_proprietario" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoInsereEnd">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="tipo_endereco" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaInsereEnd">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="tipo_endereco" type="xsd:int"/>
+               <xsd:element name="codigo_cidade" type="xsd:int"/>
+               <xsd:element name="codigo_bairro" type="xsd:int"/>
+               <xsd:element name="codigo_logradouro" type="xsd:int"/>
+               <xsd:element name="cep" type="xsd:int"/>
+               <xsd:element name="numero" type="xsd:string" nillable="true"/>
+               <xsd:element name="complemento" type="xsd:string" nillable="true"/>
+               <xsd:element name="inf_complementar" type="xsd:string" nillable="true"/>
+               <xsd:element name="garagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="sala" type="xsd:string" nillable="true"/>
+               <xsd:element name="loja" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_loteamento" type="xsd:int" nillable="true"/>
+               <xsd:element name="quadra" type="xsd:string" nillable="true"/>
+               <xsd:element name="lote" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_edificio" type="xsd:int" nillable="true"/>
+               <xsd:element name="bloco" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_apto" type="xsd:int" nillable="true"/>
+               <xsd:element name="coordenada_latitude" type="xsd:string" nillable="true"/>
+               <xsd:element name="coordenada_longitude" type="xsd:string" nillable="true"/>
+               <xsd:element name="coordenada_panorama" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="enderecoImov">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="tipo_endereco" type="xsd:int"/>
+               <xsd:element name="codigo_cidade" type="xsd:int"/>
+               <xsd:element name="codigo_bairro" type="xsd:int"/>
+               <xsd:element name="codigo_logradouro" type="xsd:int"/>
+               <xsd:element name="cep" type="xsd:int"/>
+               <xsd:element name="descricao_cidade" type="xsd:string" nillable="true"/>
+               <xsd:element name="descricao_bairro" type="xsd:string" nillable="true"/>
+               <xsd:element name="descricao_logradouro" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero" type="xsd:string" nillable="true"/>
+               <xsd:element name="complemento" type="xsd:string" nillable="true"/>
+               <xsd:element name="inf_complementar" type="xsd:string" nillable="true"/>
+               <xsd:element name="garagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="sala" type="xsd:string" nillable="true"/>
+               <xsd:element name="loja" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_loteamento" type="xsd:int" nillable="true"/>
+               <xsd:element name="quadra" type="xsd:string" nillable="true"/>
+               <xsd:element name="lote" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_edificio" type="xsd:int" nillable="true"/>
+               <xsd:element name="bloco" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_apto" type="xsd:int" nillable="true"/>
+               <xsd:element name="coordenada_latitude" type="xsd:string" nillable="true"/>
+               <xsd:element name="coordenada_longitude" type="xsd:string" nillable="true"/>
+               <xsd:element name="coordenada_panorama" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaEnderecoImov">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:enderecoImov[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaEnd">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="enderecoImoveis" type="tns:listaEnderecoImov" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaEnd">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoAlteracao">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="tipo_endereco" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="camposAlteracao">
+            <xsd:all>
+               <xsd:element name="nome_campo" type="xsd:string" nillable="true"/>
+               <xsd:element name="valor" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaCamposAlteracao">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:camposAlteracao[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="entradaAlteracao">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="tipo_endereco" type="xsd:int"/>
+               <xsd:element name="camposAltera" type="tns:listaCamposAlteracao" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoExclusao">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo" type="xsd:int" nillable="true"/>
+               <xsd:element name="tipo_endereco" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaExclusao">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="tipo_endereco" type="xsd:int"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoInsereTestada">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_testada" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaInsereTestada">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="numero_testada" type="xsd:int"/>
+               <xsd:element name="metragem" type="xsd:float"/>
+               <xsd:element name="codigo_secao" type="xsd:int"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="testadasbci">
+            <xsd:all>
+               <xsd:element name="numero_testada" type="xsd:int"/>
+               <xsd:element name="metragem" type="xsd:string"/>
+               <xsd:element name="codigo_secao" type="xsd:int"/>
+               <xsd:element name="id_secao" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaTestadasbci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:testadasbci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaTestadas">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="testadas" type="tns:listaTestadasbci" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaTestadas">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoAlteracaoTestada">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_testada" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaAlteracaoTestada">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_testada" type="xsd:int" nillable="true"/>
+               <xsd:element name="camposAltera" type="tns:listaCamposAlteracao" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoExclusaoTestada">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_testada" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaExclusaoTestada">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="numero_testada" type="xsd:int"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="erro">
+            <xsd:all>
+               <xsd:element name="descricao" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_bloco" type="xsd:int" nillable="true"/>
+               <xsd:element name="codigo_item" type="xsd:int" nillable="true"/>
+               <xsd:element name="sequencia_item" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaErro">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:erro[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBloco">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="erros" type="tns:listaErro"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="item">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="codigo_bloco" type="xsd:int"/>
+               <xsd:element name="codigo_item" type="xsd:int"/>
+               <xsd:element name="sequencia_item" type="xsd:int"/>
+               <xsd:element name="valor" type="xsd:string" nillable="true"/>
+               <xsd:element name="valor_lista" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaItem">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:item[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBloco">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="itens" type="tns:listaItem"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="blocoItensBci">
+            <xsd:all>
+               <xsd:element name="codigo_bloco" type="xsd:int"/>
+               <xsd:element name="codigo_item" type="xsd:int"/>
+               <xsd:element name="sequencia_item" type="xsd:int"/>
+               <xsd:element name="valor" type="xsd:string"/>
+               <xsd:element name="valor_lista" type="xsd:int"/>
+               <xsd:element name="data_hora" type="xsd:dateTime"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaBlocoItensBci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:blocoItensBci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaBlocoItens">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="blocoItens" type="tns:listaBlocoItensBci" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaBlocoItens">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoSubReceita">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_subreceita" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaSubReceita">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="codigo_subreceita" type="xsd:int"/>
+               <xsd:element name="data_inicio" type="xsd:date"/>
+               <xsd:element name="data_fim_vigencia" type="xsd:date" nillable="true"/>
+               <xsd:element name="situacao" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoAlteraSubReceita">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_subreceita" type="xsd:int" nillable="true"/>
+               <xsd:element name="sequencia" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaAlteraSubReceita">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="codigo_subreceita" type="xsd:int"/>
+               <xsd:element name="sequencia" type="xsd:int"/>
+               <xsd:element name="camposAltera" type="tns:listaCamposAlteracao" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoDesativaSubReceita">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_subreceita" type="xsd:int" nillable="true"/>
+               <xsd:element name="sequencia" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaDesativaSubReceita">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="codigo_subreceita" type="xsd:int"/>
+               <xsd:element name="sequencia" type="xsd:int"/>
+               <xsd:element name="data_fim_vigencia" type="xsd:date"/>
+               <xsd:element name="observacao" type="xsd:string"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="subReceitasBci">
+            <xsd:all>
+               <xsd:element name="codigo_subreceita" type="xsd:int"/>
+               <xsd:element name="sequencia" type="xsd:int"/>
+               <xsd:element name="data_inicio_vigencia" type="xsd:date"/>
+               <xsd:element name="data_fim_vigencia" type="xsd:date" nillable="true"/>
+               <xsd:element name="situacao" type="xsd:int"/>
+               <xsd:element name="observacao" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaSubReceitasBci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:subReceitasBci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaSubReceitas">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="subReceitas" type="tns:listaSubReceitasBci" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaSubReceitas">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoAlteraSituacao">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaAlteraSituacao">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="situacao" type="xsd:int"/>
+               <xsd:element name="observacao" type="xsd:string"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoAlteraTerrenoUnidade">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_unidade" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaAlteraTerrenoUnidade">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_unidade" type="xsd:string"/>
+               <xsd:element name="codigo_terreno" type="xsd:string"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoEnglobaUnidade">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_unidade" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaEnglobaUnidade">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_unidade_englobada" type="xsd:string"/>
+               <xsd:element name="codigo_unidade_global" type="xsd:string"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoInsereCadastroImobiliario">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="subtipoproprietario">
+            <xsd:all>
+               <xsd:element name="codigo" type="xsd:int" nillable="true"/>
+               <xsd:element name="tipo" type="xsd:int" nillable="true"/>
+               <xsd:element name="descricao" type="xsd:string" nillable="true"/>
+               <xsd:element name="situacao" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaSubtipoproprietario">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:subtipoproprietario[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="proprietarioscadbci">
+            <xsd:all>
+               <xsd:element name="codigo" type="xsd:string"/>
+               <xsd:element name="tipo_proprietario" type="xsd:int"/>
+               <xsd:element name="situacao" type="xsd:int"/>
+               <xsd:element name="percentual" type="xsd:string" nillable="true"/>
+               <xsd:element name="data_inicio_vigencia" type="xsd:date" nillable="true"/>
+               <xsd:element name="subtipoproprietarios" type="tns:listaSubtipoproprietario" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaProprietarioscadbci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:proprietarioscadbci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="endereco">
+            <xsd:all>
+               <xsd:element name="tipo_endereco" type="xsd:int"/>
+               <xsd:element name="codigo_cidade" type="xsd:int"/>
+               <xsd:element name="codigo_bairro" type="xsd:int"/>
+               <xsd:element name="codigo_logradouro" type="xsd:int"/>
+               <xsd:element name="cep" type="xsd:int"/>
+               <xsd:element name="descricao_cidade" type="xsd:string" nillable="true"/>
+               <xsd:element name="descricao_bairro" type="xsd:string" nillable="true"/>
+               <xsd:element name="descricao_logradouro" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero" type="xsd:string" nillable="true"/>
+               <xsd:element name="complemento" type="xsd:string" nillable="true"/>
+               <xsd:element name="inf_complementar" type="xsd:string" nillable="true"/>
+               <xsd:element name="garagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="sala" type="xsd:string" nillable="true"/>
+               <xsd:element name="loja" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_loteamento" type="xsd:int" nillable="true"/>
+               <xsd:element name="quadra" type="xsd:string" nillable="true"/>
+               <xsd:element name="lote" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_edificio" type="xsd:int" nillable="true"/>
+               <xsd:element name="bloco" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_apto" type="xsd:int" nillable="true"/>
+               <xsd:element name="coordenada_latitude" type="xsd:string" nillable="true"/>
+               <xsd:element name="coordenada_longitude" type="xsd:string" nillable="true"/>
+               <xsd:element name="coordenada_panorama" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaEndereco">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:endereco[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="testada">
+            <xsd:all>
+               <xsd:element name="numero_testada" type="xsd:int"/>
+               <xsd:element name="metragem" type="xsd:string"/>
+               <xsd:element name="codigo_secao" type="xsd:int"/>
+               <xsd:element name="id_secao" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaTestada">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:testada[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="blocoItem">
+            <xsd:all>
+               <xsd:element name="codigo_bloco" type="xsd:int"/>
+               <xsd:element name="codigo_item" type="xsd:int"/>
+               <xsd:element name="sequencia_item" type="xsd:int"/>
+               <xsd:element name="valor" type="xsd:string" nillable="true"/>
+               <xsd:element name="valor_lista" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaBlocoItem">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:blocoItem[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="subreceitacadbci">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:int"/>
+               <xsd:element name="codigo_subreceita" type="xsd:int"/>
+               <xsd:element name="data_inicio_vigencia" type="xsd:date"/>
+               <xsd:element name="data_fim_vigencia" type="xsd:date" nillable="true"/>
+               <xsd:element name="situacao" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaSubreceitacadbci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:subreceitacadbci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="zoneamento">
+            <xsd:all>
+               <xsd:element name="codigo_zoneamento" type="xsd:int" nillable="true"/>
+               <xsd:element name="observacao" type="xsd:string"/>
+               <xsd:element name="principal" type="xsd:int"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaZoneamento">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:zoneamento[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="cadastrosbci">
+            <xsd:all>
+               <xsd:element name="tipo_cadastro" type="xsd:int"/>
+               <xsd:element name="codigo_terreno" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro_global" type="xsd:string" nillable="true"/>
+               <xsd:element name="inscricao_imobiliaria" type="xsd:string" nillable="true"/>
+               <xsd:element name="inscricao_anterior" type="xsd:string" nillable="true"/>
+               <xsd:element name="observacao" type="xsd:string" nillable="true"/>
+               <xsd:element name="unico_cartorio" type="xsd:int" nillable="true"/>
+               <xsd:element name="matricula" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_livro" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_folha" type="xsd:string" nillable="true"/>
+               <xsd:element name="area_terreno" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_terreno_escriturada" type="xsd:float" nillable="true"/>
+               <xsd:element name="profundidade" type="xsd:string" nillable="true"/>
+               <xsd:element name="area_construida" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_averbada" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_comum" type="xsd:float" nillable="true"/>
+               <xsd:element name="afastamento_frontal" type="xsd:float" nillable="true"/>
+               <xsd:element name="numero_pavimentos" type="xsd:int" nillable="true"/>
+               <xsd:element name="nome_propriedade" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_incra" type="xsd:int" nillable="true"/>
+               <xsd:element name="numero_receita_federal" type="xsd:int" nillable="true"/>
+               <xsd:element name="area_terreno_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_terreno_escriturada_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_averbada_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="tipo_medida" type="xsd:int" nillable="true"/>
+               <xsd:element name="proprietariosbci" type="tns:listaProprietarioscadbci" nillable="true"/>
+               <xsd:element name="enderecos" type="tns:listaEndereco" nillable="true"/>
+               <xsd:element name="testadas" type="tns:listaTestada" nillable="true"/>
+               <xsd:element name="caracteristicas" type="tns:listaBlocoItem" nillable="true"/>
+               <xsd:element name="subreceitas" type="tns:listaSubreceitacadbci" nillable="true"/>
+               <xsd:element name="zoneamentos" type="tns:listaZoneamento" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaCadastrosbci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:cadastrosbci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="entradaInsereCadastroImobiliario">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="cadastros" type="tns:listaCadastrosbci" nillable="true"/>
+               <xsd:element name="tipo_operacao" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoInsereZoneamento">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_zoneamento" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaInsereZoneamento">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="codigo_zoneamento" type="xsd:int"/>
+               <xsd:element name="observacao" type="xsd:string"/>
+               <xsd:element name="principal" type="xsd:int"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoAlteraZoneamento">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_zoneamento" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaAlteraZoneamento">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="codigo_zoneamento" type="xsd:int"/>
+               <xsd:element name="camposAltera" type="tns:listaCamposAlteracao" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoExcluiZoneamento">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_zoneamento" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaExcluiZoneamento">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="codigo_zoneamento" type="xsd:int"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="zoneamentobci">
+            <xsd:all>
+               <xsd:element name="codigo_zoneamento" type="xsd:int" nillable="true"/>
+               <xsd:element name="descricao" type="xsd:string" nillable="true"/>
+               <xsd:element name="observacao" type="xsd:string"/>
+               <xsd:element name="principal" type="xsd:int"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaZoneamentobci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:zoneamentobci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaZoneamento">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="zoneamentos" type="tns:listaZoneamentobci" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaZoneamento">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="subreceitabuscacadbci">
+            <xsd:all>
+               <xsd:element name="codigo_subreceita" type="xsd:int"/>
+               <xsd:element name="data_inicio_vigencia" type="xsd:date"/>
+               <xsd:element name="data_fim_vigencia" type="xsd:date" nillable="true"/>
+               <xsd:element name="situacao" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaSubreceitabuscacadbci">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:subreceitabuscacadbci[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaCadbci">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="tipo_cadastro" type="xsd:int"/>
+               <xsd:element name="codigo_terreno" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro_global" type="xsd:string" nillable="true"/>
+               <xsd:element name="situacao_cadastral" type="xsd:int" nillable="true"/>
+               <xsd:element name="inscricao_imobiliaria" type="xsd:string" nillable="true"/>
+               <xsd:element name="inscricao_anterior" type="xsd:string" nillable="true"/>
+               <xsd:element name="observacao" type="xsd:string" nillable="true"/>
+               <xsd:element name="unico_cartorio" type="xsd:int" nillable="true"/>
+               <xsd:element name="matricula" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_livro" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_folha" type="xsd:string" nillable="true"/>
+               <xsd:element name="area_terreno" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_terreno_escriturada" type="xsd:float" nillable="true"/>
+               <xsd:element name="profundidade" type="xsd:string" nillable="true"/>
+               <xsd:element name="area_construida" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_averbada" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_total_construida" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_comum" type="xsd:float" nillable="true"/>
+               <xsd:element name="afastamento_frontal" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_pavimentos" type="xsd:int" nillable="true"/>
+               <xsd:element name="nome_propriedade" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_incra" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_receita_federal" type="xsd:int" nillable="true"/>
+               <xsd:element name="area_terreno_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_terreno_escriturada_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_averbada_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="tipo_medida" type="xsd:int" nillable="true"/>
+               <xsd:element name="economicos" type="xsd:string" nillable="true"/>
+               <xsd:element name="proprietariosbci" type="tns:listaProprietarioscadbci" nillable="true"/>
+               <xsd:element name="enderecos" type="tns:listaEndereco" nillable="true"/>
+               <xsd:element name="testadas" type="tns:listaTestada" nillable="true"/>
+               <xsd:element name="caracteristicas" type="tns:listaBlocoItem" nillable="true"/>
+               <xsd:element name="subreceitas" type="tns:listaSubreceitabuscacadbci" nillable="true"/>
+               <xsd:element name="zoneamentos" type="tns:listaZoneamentobci" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaCadbci">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="inscricao_imobiliaria" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="cadastros">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="tipo_cadastro" type="xsd:int"/>
+               <xsd:element name="data_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_terreno" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro_global" type="xsd:string" nillable="true"/>
+               <xsd:element name="situacao_cadastral" type="xsd:int" nillable="true"/>
+               <xsd:element name="inscricao_imobiliaria" type="xsd:string" nillable="true"/>
+               <xsd:element name="inscricao_anterior" type="xsd:string" nillable="true"/>
+               <xsd:element name="observacao" type="xsd:string" nillable="true"/>
+               <xsd:element name="unico_cartorio" type="xsd:int" nillable="true"/>
+               <xsd:element name="matricula" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_livro" type="xsd:string" nillable="true"/>
+               <xsd:element name="nro_folha" type="xsd:string" nillable="true"/>
+               <xsd:element name="area_terreno" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_terreno_escriturada" type="xsd:float" nillable="true"/>
+               <xsd:element name="profundidade" type="xsd:string" nillable="true"/>
+               <xsd:element name="area_construida" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_averbada" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_total_construida" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_comum" type="xsd:float" nillable="true"/>
+               <xsd:element name="afastamento_frontal" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_pavimentos" type="xsd:int" nillable="true"/>
+               <xsd:element name="nome_propriedade" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_incra" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_receita_federal" type="xsd:int" nillable="true"/>
+               <xsd:element name="area_terreno_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_terreno_escriturada_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="area_construida_averbada_rural" type="xsd:float" nillable="true"/>
+               <xsd:element name="tipo_medida" type="xsd:int" nillable="true"/>
+               <xsd:element name="economicos" type="xsd:string" nillable="true"/>
+               <xsd:element name="proprietariosbci" type="tns:listaProprietarioscadbci" nillable="true"/>
+               <xsd:element name="enderecos" type="tns:listaEndereco" nillable="true"/>
+               <xsd:element name="testadas" type="tns:listaTestada" nillable="true"/>
+               <xsd:element name="caracteristicas" type="tns:listaBlocoItem" nillable="true"/>
+               <xsd:element name="subreceitas" type="tns:listaSubreceitabuscacadbci" nillable="true"/>
+               <xsd:element name="zoneamentos" type="tns:listaZoneamentobci" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaCadastros">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:cadastros[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaCadbciGeral">
+            <xsd:all>
+               <xsd:element name="cadastros" type="tns:listaCadastros" nillable="true"/>
+               <xsd:element name="data_hora_ultima_alteracao" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaCadbciGeral">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="inscricao_imobiliaria" type="xsd:string" nillable="true"/>
+               <xsd:element name="proprietario_cpfcnpj" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_terreno" type="xsd:string" nillable="true"/>
+               <xsd:element name="data_hora_alteracao" type="xsd:string" nillable="true"/>
+               <xsd:element name="tipo_consulta" type="xsd:int" nillable="true"/>
+               <xsd:element name="situacao" type="xsd:int" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="itbis">
+            <xsd:all>
+               <xsd:element name="numero_itbi" type="xsd:int" nillable="true"/>
+               <xsd:element name="ano_itbi" type="xsd:int" nillable="true"/>
+               <xsd:element name="observacao" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:int" nillable="true"/>
+               <xsd:element name="inscricao_imobiliaria" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_situacao" type="xsd:int" nillable="true"/>
+               <xsd:element name="descricao_situacao" type="xsd:string" nillable="true"/>
+               <xsd:element name="vvt_calculado" type="xsd:string" nillable="true"/>
+               <xsd:element name="vvp_calculado" type="xsd:string" nillable="true"/>
+               <xsd:element name="total_calculado" type="xsd:string" nillable="true"/>
+               <xsd:element name="vvt_informado" type="xsd:string" nillable="true"/>
+               <xsd:element name="vvp_informado" type="xsd:string" nillable="true"/>
+               <xsd:element name="total_informado" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaItbis">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:itbis[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaItbiCadbci">
+            <xsd:all>
+               <xsd:element name="itbis" type="tns:listaItbis" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaItbiCadbci">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:int" nillable="true"/>
+               <xsd:element name="inscricao_imobiliaria" type="xsd:string" nillable="true"/>
+               <xsd:element name="numero_itbi" type="xsd:int" nillable="true"/>
+               <xsd:element name="ano_itbi" type="xsd:int" nillable="true"/>
+               <xsd:element name="data_itbi" type="xsd:date" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoAlteraCadastroImobiliario">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaAlteraCadastroImobiliario">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string"/>
+               <xsd:element name="camposAltera" type="tns:listaCamposAlteracao" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="historico">
+            <xsd:all>
+               <xsd:element name="data_hora" type="xsd:string" nillable="true"/>
+               <xsd:element name="operacao" type="xsd:string" nillable="true"/>
+               <xsd:element name="campo_alterado" type="xsd:string" nillable="true"/>
+               <xsd:element name="informacao_anterior" type="xsd:string" nillable="true"/>
+               <xsd:element name="informacao_nova" type="xsd:string" nillable="true"/>
+               <xsd:element name="usuario" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaHistorico">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:historico[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaHistorico">
+            <xsd:all>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="historicos" type="tns:listaHistorico" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaHistorico">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="anexo">
+            <xsd:all>
+               <xsd:element name="nome" type="xsd:string" nillable="true"/>
+               <xsd:element name="nome_download" type="xsd:string" nillable="true"/>
+               <xsd:element name="tipo" type="xsd:string" nillable="true"/>
+               <xsd:element name="conteudo" type="xsd:string" nillable="true"/>
+               <xsd:element name="data" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="listaAnexo">
+            <xsd:complexContent>
+               <xsd:restriction base="SOAP-ENC:Array">
+                  <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:anexo[]" xmlns:wsdl1="http://schemas.xmlsoap.org/wsdl/"/>
+               </xsd:restriction>
+            </xsd:complexContent>
+         </xsd:complexType>
+         <xsd:complexType name="retornoBuscaAnexos">
+            <xsd:all>
+               <xsd:element name="anexos" type="tns:listaAnexo" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaBuscaAnexos">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="retornoInsereAnexo">
+            <xsd:all>
+               <xsd:element name="mensagem" type="xsd:string" nillable="true"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="sequencia_anexo" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+         <xsd:complexType name="entradaInsereAnexo">
+            <xsd:all>
+               <xsd:element name="cpf_monitoracao" type="xsd:string"/>
+               <xsd:element name="codigo_cadastro" type="xsd:string" nillable="true"/>
+               <xsd:element name="nome_anexo" type="xsd:string" nillable="true"/>
+               <xsd:element name="extensao_anexo" type="xsd:string" nillable="true"/>
+               <xsd:element name="conteudo" type="xsd:string" nillable="true"/>
+            </xsd:all>
+         </xsd:complexType>
+      </xsd:schema>
+   </types>
+   <message name="alteraProprietariosRequest">
+      <part name="entrada" type="tns:entradaAlteraProp"/>
+   </message>
+   <message name="alteraProprietariosResponse">
+      <part name="return" type="tns:retornoAlteraProp"/>
+   </message>
+   <message name="buscaProprietariosRequest">
+      <part name="entrada" type="tns:entradaBuscaProp"/>
+   </message>
+   <message name="buscaProprietariosResponse">
+      <part name="return" type="tns:retornoBuscaProp"/>
+   </message>
+   <message name="insereEnderecoImovelRequest">
+      <part name="entrada" type="tns:entradaInsereEnd"/>
+   </message>
+   <message name="insereEnderecoImovelResponse">
+      <part name="return" type="tns:retornoInsereEnd"/>
+   </message>
+   <message name="buscaEnderecoImovelRequest">
+      <part name="entrada" type="tns:entradaBuscaEnd"/>
+   </message>
+   <message name="buscaEnderecoImovelResponse">
+      <part name="return" type="tns:retornoBuscaEnd"/>
+   </message>
+   <message name="alteraEnderecoRequest">
+      <part name="entrada" type="tns:entradaAlteracao"/>
+   </message>
+   <message name="alteraEnderecoResponse">
+      <part name="return" type="tns:retornoAlteracao"/>
+   </message>
+   <message name="excluiEnderecoRequest">
+      <part name="entrada" type="tns:entradaExclusao"/>
+   </message>
+   <message name="excluiEnderecoResponse">
+      <part name="return" type="tns:retornoExclusao"/>
+   </message>
+   <message name="insereTestadaRequest">
+      <part name="entrada" type="tns:entradaInsereTestada"/>
+   </message>
+   <message name="insereTestadaResponse">
+      <part name="return" type="tns:retornoInsereTestada"/>
+   </message>
+   <message name="buscaTestadasRequest">
+      <part name="entrada" type="tns:entradaBuscaTestadas"/>
+   </message>
+   <message name="buscaTestadasResponse">
+      <part name="return" type="tns:retornoBuscaTestadas"/>
+   </message>
+   <message name="alteraTestadaRequest">
+      <part name="entrada" type="tns:entradaAlteracaoTestada"/>
+   </message>
+   <message name="alteraTestadaResponse">
+      <part name="return" type="tns:retornoAlteracaoTestada"/>
+   </message>
+   <message name="excluiTestadaRequest">
+      <part name="entrada" type="tns:entradaExclusaoTestada"/>
+   </message>
+   <message name="excluiTestadaResponse">
+      <part name="return" type="tns:retornoExclusaoTestada"/>
+   </message>
+   <message name="insertBlocoItemRequest">
+      <part name="entrada" type="tns:entradaBloco"/>
+   </message>
+   <message name="insertBlocoItemResponse">
+      <part name="return" type="tns:retornoBloco"/>
+   </message>
+   <message name="buscaBlocoItensRequest">
+      <part name="entrada" type="tns:entradaBuscaBlocoItens"/>
+   </message>
+   <message name="buscaBlocoItensResponse">
+      <part name="return" type="tns:retornoBuscaBlocoItens"/>
+   </message>
+   <message name="insereSubReceitaRequest">
+      <part name="entrada" type="tns:entradaSubReceita"/>
+   </message>
+   <message name="insereSubReceitaResponse">
+      <part name="return" type="tns:retornoSubReceita"/>
+   </message>
+   <message name="alteraSubReceitaRequest">
+      <part name="entrada" type="tns:entradaAlteraSubReceita"/>
+   </message>
+   <message name="alteraSubReceitaResponse">
+      <part name="return" type="tns:retornoAlteraSubReceita"/>
+   </message>
+   <message name="desativaSubReceitaRequest">
+      <part name="entrada" type="tns:entradaDesativaSubReceita"/>
+   </message>
+   <message name="desativaSubReceitaResponse">
+      <part name="return" type="tns:retornoDesativaSubReceita"/>
+   </message>
+   <message name="buscaSubReceitasRequest">
+      <part name="entrada" type="tns:entradaBuscaSubReceitas"/>
+   </message>
+   <message name="buscaSubReceitasResponse">
+      <part name="return" type="tns:retornoBuscaSubReceitas"/>
+   </message>
+   <message name="alteraSituacaoCadastralRequest">
+      <part name="entrada" type="tns:entradaAlteraSituacao"/>
+   </message>
+   <message name="alteraSituacaoCadastralResponse">
+      <part name="return" type="tns:retornoAlteraSituacao"/>
+   </message>
+   <message name="alteraTerrenoUnidadeRequest">
+      <part name="entrada" type="tns:entradaAlteraTerrenoUnidade"/>
+   </message>
+   <message name="alteraTerrenoUnidadeResponse">
+      <part name="return" type="tns:retornoAlteraTerrenoUnidade"/>
+   </message>
+   <message name="englobaDesenglobaUnidadeRequest">
+      <part name="entrada" type="tns:entradaEnglobaUnidade"/>
+   </message>
+   <message name="englobaDesenglobaUnidadeResponse">
+      <part name="return" type="tns:retornoEnglobaUnidade"/>
+   </message>
+   <message name="insereCadastroImobiliarioRequest">
+      <part name="entrada" type="tns:entradaInsereCadastroImobiliario"/>
+   </message>
+   <message name="insereCadastroImobiliarioResponse">
+      <part name="return" type="tns:retornoInsereCadastroImobiliario"/>
+   </message>
+   <message name="insereZoneamentoRequest">
+      <part name="entrada" type="tns:entradaInsereZoneamento"/>
+   </message>
+   <message name="insereZoneamentoResponse">
+      <part name="return" type="tns:retornoInsereZoneamento"/>
+   </message>
+   <message name="alteraZoneamentoRequest">
+      <part name="entrada" type="tns:entradaAlteraZoneamento"/>
+   </message>
+   <message name="alteraZoneamentoResponse">
+      <part name="return" type="tns:retornoAlteraZoneamento"/>
+   </message>
+   <message name="excluiZoneamentoRequest">
+      <part name="entrada" type="tns:entradaExcluiZoneamento"/>
+   </message>
+   <message name="excluiZoneamentoResponse">
+      <part name="return" type="tns:retornoExcluiZoneamento"/>
+   </message>
+   <message name="buscaZoneamentoRequest">
+      <part name="entrada" type="tns:entradaBuscaZoneamento"/>
+   </message>
+   <message name="buscaZoneamentoResponse">
+      <part name="return" type="tns:retornoBuscaZoneamento"/>
+   </message>
+   <message name="buscaCadastroImobiliarioRequest">
+      <part name="entrada" type="tns:entradaBuscaCadbci"/>
+   </message>
+   <message name="buscaCadastroImobiliarioResponse">
+      <part name="return" type="tns:retornoBuscaCadbci"/>
+   </message>
+   <message name="buscaCadastroImobiliarioGeralRequest">
+      <part name="entrada" type="tns:entradaBuscaCadbciGeral"/>
+   </message>
+   <message name="buscaCadastroImobiliarioGeralResponse">
+      <part name="return" type="tns:retornoBuscaCadbciGeral"/>
+   </message>
+   <message name="buscaItbiCadastroImobiliarioRequest">
+      <part name="entrada" type="tns:entradaBuscaItbiCadbci"/>
+   </message>
+   <message name="buscaItbiCadastroImobiliarioResponse">
+      <part name="return" type="tns:retornoBuscaItbiCadbci"/>
+   </message>
+   <message name="alteraCadastroImobiliarioRequest">
+      <part name="entrada" type="tns:entradaAlteraCadastroImobiliario"/>
+   </message>
+   <message name="alteraCadastroImobiliarioResponse">
+      <part name="return" type="tns:retornoAlteraCadastroImobiliario"/>
+   </message>
+   <message name="buscaHistoricoRequest">
+      <part name="entrada" type="tns:entradaBuscaHistorico"/>
+   </message>
+   <message name="buscaHistoricoResponse">
+      <part name="return" type="tns:retornoBuscaHistorico"/>
+   </message>
+   <message name="buscaAnexosRequest">
+      <part name="entrada" type="tns:entradaBuscaAnexos"/>
+   </message>
+   <message name="buscaAnexosResponse">
+      <part name="return" type="tns:retornoBuscaAnexos"/>
+   </message>
+   <message name="incluirAnexoRequest">
+      <part name="entrada" type="tns:entradaInsereAnexo"/>
+   </message>
+   <message name="incluirAnexoResponse">
+      <part name="return" type="tns:retornoInsereAnexo"/>
+   </message>
+   <portType name="WIPCadbciIntegracaoGeoPortType">
+      <operation name="alteraProprietarios">
+         <documentation/>
+         <input message="tns:alteraProprietariosRequest"/>
+         <output message="tns:alteraProprietariosResponse"/>
+      </operation>
+      <operation name="buscaProprietarios">
+         <documentation/>
+         <input message="tns:buscaProprietariosRequest"/>
+         <output message="tns:buscaProprietariosResponse"/>
+      </operation>
+      <operation name="insereEnderecoImovel">
+         <documentation/>
+         <input message="tns:insereEnderecoImovelRequest"/>
+         <output message="tns:insereEnderecoImovelResponse"/>
+      </operation>
+      <operation name="buscaEnderecoImovel">
+         <documentation/>
+         <input message="tns:buscaEnderecoImovelRequest"/>
+         <output message="tns:buscaEnderecoImovelResponse"/>
+      </operation>
+      <operation name="alteraEndereco">
+         <documentation/>
+         <input message="tns:alteraEnderecoRequest"/>
+         <output message="tns:alteraEnderecoResponse"/>
+      </operation>
+      <operation name="excluiEndereco">
+         <documentation/>
+         <input message="tns:excluiEnderecoRequest"/>
+         <output message="tns:excluiEnderecoResponse"/>
+      </operation>
+      <operation name="insereTestada">
+         <documentation/>
+         <input message="tns:insereTestadaRequest"/>
+         <output message="tns:insereTestadaResponse"/>
+      </operation>
+      <operation name="buscaTestadas">
+         <documentation/>
+         <input message="tns:buscaTestadasRequest"/>
+         <output message="tns:buscaTestadasResponse"/>
+      </operation>
+      <operation name="alteraTestada">
+         <documentation/>
+         <input message="tns:alteraTestadaRequest"/>
+         <output message="tns:alteraTestadaResponse"/>
+      </operation>
+      <operation name="excluiTestada">
+         <documentation/>
+         <input message="tns:excluiTestadaRequest"/>
+         <output message="tns:excluiTestadaResponse"/>
+      </operation>
+      <operation name="insertBlocoItem">
+         <documentation/>
+         <input message="tns:insertBlocoItemRequest"/>
+         <output message="tns:insertBlocoItemResponse"/>
+      </operation>
+      <operation name="buscaBlocoItens">
+         <documentation/>
+         <input message="tns:buscaBlocoItensRequest"/>
+         <output message="tns:buscaBlocoItensResponse"/>
+      </operation>
+      <operation name="insereSubReceita">
+         <documentation/>
+         <input message="tns:insereSubReceitaRequest"/>
+         <output message="tns:insereSubReceitaResponse"/>
+      </operation>
+      <operation name="alteraSubReceita">
+         <documentation/>
+         <input message="tns:alteraSubReceitaRequest"/>
+         <output message="tns:alteraSubReceitaResponse"/>
+      </operation>
+      <operation name="desativaSubReceita">
+         <documentation/>
+         <input message="tns:desativaSubReceitaRequest"/>
+         <output message="tns:desativaSubReceitaResponse"/>
+      </operation>
+      <operation name="buscaSubReceitas">
+         <documentation/>
+         <input message="tns:buscaSubReceitasRequest"/>
+         <output message="tns:buscaSubReceitasResponse"/>
+      </operation>
+      <operation name="alteraSituacaoCadastral">
+         <documentation/>
+         <input message="tns:alteraSituacaoCadastralRequest"/>
+         <output message="tns:alteraSituacaoCadastralResponse"/>
+      </operation>
+      <operation name="alteraTerrenoUnidade">
+         <documentation/>
+         <input message="tns:alteraTerrenoUnidadeRequest"/>
+         <output message="tns:alteraTerrenoUnidadeResponse"/>
+      </operation>
+      <operation name="englobaDesenglobaUnidade">
+         <documentation/>
+         <input message="tns:englobaDesenglobaUnidadeRequest"/>
+         <output message="tns:englobaDesenglobaUnidadeResponse"/>
+      </operation>
+      <operation name="insereCadastroImobiliario">
+         <documentation/>
+         <input message="tns:insereCadastroImobiliarioRequest"/>
+         <output message="tns:insereCadastroImobiliarioResponse"/>
+      </operation>
+      <operation name="insereZoneamento">
+         <documentation/>
+         <input message="tns:insereZoneamentoRequest"/>
+         <output message="tns:insereZoneamentoResponse"/>
+      </operation>
+      <operation name="alteraZoneamento">
+         <documentation/>
+         <input message="tns:alteraZoneamentoRequest"/>
+         <output message="tns:alteraZoneamentoResponse"/>
+      </operation>
+      <operation name="excluiZoneamento">
+         <documentation/>
+         <input message="tns:excluiZoneamentoRequest"/>
+         <output message="tns:excluiZoneamentoResponse"/>
+      </operation>
+      <operation name="buscaZoneamento">
+         <documentation/>
+         <input message="tns:buscaZoneamentoRequest"/>
+         <output message="tns:buscaZoneamentoResponse"/>
+      </operation>
+      <operation name="buscaCadastroImobiliario">
+         <documentation/>
+         <input message="tns:buscaCadastroImobiliarioRequest"/>
+         <output message="tns:buscaCadastroImobiliarioResponse"/>
+      </operation>
+      <operation name="buscaCadastroImobiliarioGeral">
+         <documentation/>
+         <input message="tns:buscaCadastroImobiliarioGeralRequest"/>
+         <output message="tns:buscaCadastroImobiliarioGeralResponse"/>
+      </operation>
+      <operation name="buscaItbiCadastroImobiliario">
+         <documentation/>
+         <input message="tns:buscaItbiCadastroImobiliarioRequest"/>
+         <output message="tns:buscaItbiCadastroImobiliarioResponse"/>
+      </operation>
+      <operation name="alteraCadastroImobiliario">
+         <documentation/>
+         <input message="tns:alteraCadastroImobiliarioRequest"/>
+         <output message="tns:alteraCadastroImobiliarioResponse"/>
+      </operation>
+      <operation name="buscaHistorico">
+         <documentation/>
+         <input message="tns:buscaHistoricoRequest"/>
+         <output message="tns:buscaHistoricoResponse"/>
+      </operation>
+      <operation name="buscaAnexos">
+         <documentation/>
+         <input message="tns:buscaAnexosRequest"/>
+         <output message="tns:buscaAnexosResponse"/>
+      </operation>
+      <operation name="incluirAnexo">
+         <documentation/>
+         <input message="tns:incluirAnexoRequest"/>
+         <output message="tns:incluirAnexoResponse"/>
+      </operation>
+   </portType>
+   <binding name="WIPCadbciIntegracaoGeoBinding" type="tns:WIPCadbciIntegracaoGeoPortType">
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <operation name="alteraProprietarios">
+         <soap:operation soapAction="net.atende#alteraProprietarios" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaProprietarios">
+         <soap:operation soapAction="net.atende#buscaProprietarios" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="insereEnderecoImovel">
+         <soap:operation soapAction="net.atende#insereEnderecoImovel" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaEnderecoImovel">
+         <soap:operation soapAction="net.atende#buscaEnderecoImovel" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="alteraEndereco">
+         <soap:operation soapAction="net.atende#alteraEndereco" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="excluiEndereco">
+         <soap:operation soapAction="net.atende#excluiEndereco" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="insereTestada">
+         <soap:operation soapAction="net.atende#insereTestada" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaTestadas">
+         <soap:operation soapAction="net.atende#buscaTestadas" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="alteraTestada">
+         <soap:operation soapAction="net.atende#alteraTestada" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="excluiTestada">
+         <soap:operation soapAction="net.atende#excluiTestada" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="insertBlocoItem">
+         <soap:operation soapAction="net.atende#insertBlocoItem" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaBlocoItens">
+         <soap:operation soapAction="net.atende#buscaBlocoItens" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="insereSubReceita">
+         <soap:operation soapAction="net.atende#insereSubReceita" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="alteraSubReceita">
+         <soap:operation soapAction="net.atende#alteraSubReceita" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="desativaSubReceita">
+         <soap:operation soapAction="net.atende#desativaSubReceita" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaSubReceitas">
+         <soap:operation soapAction="net.atende#buscaSubReceitas" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="alteraSituacaoCadastral">
+         <soap:operation soapAction="net.atende#alteraSituacaoCadastral" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="alteraTerrenoUnidade">
+         <soap:operation soapAction="net.atende#alteraTerrenoUnidade" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="englobaDesenglobaUnidade">
+         <soap:operation soapAction="net.atende#englobaDesenglobaUnidade" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="insereCadastroImobiliario">
+         <soap:operation soapAction="net.atende#insereCadastroImobiliario" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="insereZoneamento">
+         <soap:operation soapAction="net.atende#insereZoneamento" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="alteraZoneamento">
+         <soap:operation soapAction="net.atende#alteraZoneamento" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="excluiZoneamento">
+         <soap:operation soapAction="net.atende#excluiZoneamento" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaZoneamento">
+         <soap:operation soapAction="net.atende#buscaZoneamento" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaCadastroImobiliario">
+         <soap:operation soapAction="net.atende#buscaCadastroImobiliario" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaCadastroImobiliarioGeral">
+         <soap:operation soapAction="net.atende#buscaCadastroImobiliarioGeral" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaItbiCadastroImobiliario">
+         <soap:operation soapAction="net.atende#buscaItbiCadastroImobiliario" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="alteraCadastroImobiliario">
+         <soap:operation soapAction="net.atende#alteraCadastroImobiliario" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaHistorico">
+         <soap:operation soapAction="net.atende#buscaHistorico" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="buscaAnexos">
+         <soap:operation soapAction="net.atende#buscaAnexos" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+      <operation name="incluirAnexo">
+         <soap:operation soapAction="net.atende#incluirAnexo" style="rpc"/>
+         <input>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </input>
+         <output>
+            <soap:body use="encoded" namespace="net.atende" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+         </output>
+      </operation>
+   </binding>
+   <service name="WIPCadbciIntegracaoGeo">
+      <port name="WIPCadbciIntegracaoGeoPort" binding="tns:WIPCadbciIntegracaoGeoBinding">
+         <soap:address location="https://clevelandia.atende.net/?pg=services&amp;service=WIPCadbciIntegracaoGeo&amp;cidade=padrao"/>
+      </port>
+   </service>
+</definitions>

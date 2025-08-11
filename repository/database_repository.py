@@ -12,7 +12,8 @@ from datetime import datetime
 
 from model.database_models import (
     CadastroImobiliario, Proprietario, Endereco,
-    Zoneamento, ProcessamentoLog
+    Zoneamento, ProcessamentoLog,
+    Testada, Subreceita
 )
 from interface.cli_interface import CLIInterface
 
@@ -46,7 +47,7 @@ class DatabaseRepository:
             # Criar registro principal
             cadastro = CadastroImobiliario(
                 codigo_cadastro=dados_cadastro.get('codigo_cadastro'),
-                situacao=dados_cadastro.get('situacao'),
+                situacao=dados_cadastro.get('situacao_cadastral'),
                 categoria=dados_cadastro.get('categoria'),
                 tipo_cadastro=dados_cadastro.get('tipo_cadastro'),
                 area_terreno=self._parse_float(dados_cadastro.get('area_terreno')),
@@ -69,6 +70,12 @@ class DatabaseRepository:
             # Inserir zoneamentos
             self._inserir_zoneamentos(cadastro.id, dados_cadastro.get('zoneamentos', []))
 
+            # Inserir testadas
+            self._inserir_testadas(cadastro.id, dados_cadastro.get('testadas', []))
+
+            # Inserir subreceitas
+            self._inserir_subreceitas(cadastro.id, dados_cadastro.get('subreceitas', []))
+
             return cadastro.id
 
         except Exception as e:
@@ -81,12 +88,38 @@ class DatabaseRepository:
             if isinstance(prop_data, dict):
                 proprietario = Proprietario(
                     cadastro_id=cadastro_id,
-                    codigo_pessoa=prop_data.get('codigo_pessoa'),
+                    codigo_pessoa=prop_data.get('codigo'),  # campo correto do JSON
                     tipo_proprietario=prop_data.get('tipo_proprietario'),
                     situacao=prop_data.get('situacao'),
                     percentual=prop_data.get('percentual')
                 )
                 self.session.add(proprietario)
+
+    def _inserir_testadas(self, cadastro_id: int, testadas: List[Dict[str, Any]]):
+        """Insere testadas associadas ao cadastro"""
+        for testada_data in testadas:
+            if isinstance(testada_data, dict):
+                testada = Testada(
+                    cadastro_id=cadastro_id,
+                    numero_testada=testada_data.get('numero_testada'),
+                    metragem=testada_data.get('metragem'),
+                    codigo_secao=testada_data.get('codigo_secao'),
+                    id_secao=testada_data.get('id_secao')
+                )
+                self.session.add(testada)
+
+    def _inserir_subreceitas(self, cadastro_id: int, subreceitas: List[Dict[str, Any]]):
+        """Insere subreceitas associadas ao cadastro"""
+        for sub_data in subreceitas:
+            if isinstance(sub_data, dict):
+                subreceita = Subreceita(
+                    cadastro_id=cadastro_id,
+                    codigo_subreceita=sub_data.get('codigo_subreceita'),
+                    data_inicio_vigencia=sub_data.get('data_inicio_vigencia'),
+                    data_fim_vigencia=sub_data.get('data_fim_vigencia'),
+                    situacao=sub_data.get('situacao')
+                )
+                self.session.add(subreceita)
 
     def _inserir_enderecos(self, cadastro_id: int, enderecos: List[Dict[str, Any]]):
         """Insere endereços associados ao cadastro"""

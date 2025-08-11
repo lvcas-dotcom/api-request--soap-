@@ -47,6 +47,8 @@ class CadastroImobiliario(Base):
     proprietarios = relationship("Proprietario", back_populates="cadastro", cascade="all, delete-orphan")
     enderecos = relationship("Endereco", back_populates="cadastro", cascade="all, delete-orphan")
     zoneamentos = relationship("Zoneamento", back_populates="cadastro", cascade="all, delete-orphan")
+    testadas = relationship("Testada", back_populates="cadastro", cascade="all, delete-orphan")
+    subreceitas = relationship("Subreceita", back_populates="cadastro", cascade="all, delete-orphan")
 
 
 class Proprietario(Base):
@@ -109,6 +111,42 @@ class Zoneamento(Base):
 
     # Relacionamento
     cadastro = relationship("CadastroImobiliario", back_populates="zoneamentos")
+
+
+# Nova tabela para Testada
+class Testada(Base):
+    __tablename__ = 'testadas'
+    __table_args__ = (
+        Index('idx_cadastro_testada', 'cadastro_id'),
+        {'schema': 'public'}
+    )
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    cadastro_id = Column(Integer, ForeignKey('public.cadastros_imobiliarios.id', ondelete='CASCADE'))
+    numero_testada = Column(Integer)
+    metragem = Column(String(20))
+    codigo_secao = Column(Integer)
+    id_secao = Column(Integer)
+
+    cadastro = relationship("CadastroImobiliario", back_populates="testadas")
+
+
+# Nova tabela para Subreceita
+class Subreceita(Base):
+    __tablename__ = 'subreceitas'
+    __table_args__ = (
+        Index('idx_cadastro_subreceita', 'cadastro_id'),
+        {'schema': 'public'}
+    )
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    cadastro_id = Column(Integer, ForeignKey('public.cadastros_imobiliarios.id', ondelete='CASCADE'))
+    codigo_subreceita = Column(Integer)
+    data_inicio_vigencia = Column(String(20))
+    data_fim_vigencia = Column(String(20))
+    situacao = Column(String(10))
+
+    cadastro = relationship("CadastroImobiliario", back_populates="subreceitas")
 
 
 class ProcessamentoLog(Base):

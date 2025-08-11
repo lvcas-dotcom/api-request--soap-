@@ -132,20 +132,21 @@ class CLIInterface:
         
         if codigos_info:
             print(f"\n🔢 Análise de códigos:")
-            print(f"  • Menor código: {Colors.info(str(codigos_info['menor']))}")
-            print(f"  • Maior código: {Colors.info(str(codigos_info['maior']))}")
-            print(f"  • Códigos únicos: {Colors.success(str(codigos_info['unicos']))}")
-            densidade_txt = f"{codigos_info['densidade']:.1f}%"
+            print(f"  • Menor código: {Colors.info(str(codigos_info.get('menor_codigo', 'N/A')))}")
+            print(f"  • Maior código: {Colors.info(str(codigos_info.get('maior_codigo', 'N/A')))}")
+            print(f"  • Códigos únicos: {Colors.success(str(codigos_info.get('codigos_unicos', codigos_info.get('total', 'N/A'))))}")
+            densidade = codigos_info.get('densidade_ocupacao', 0)
+            densidade_txt = f"{densidade:.1f}%"
             print(f"  • Densidade: {Colors.warning(densidade_txt)}")
         
-        if stats['tipos']:
-            print(f"\n🏷️ Distribuição por tipo:")
-            for tipo, count in stats['tipos'].items():
-                print(f"  • Tipo {Colors.info(str(tipo))}: {Colors.success(str(count))} cadastros")
+        if stats.get('tipos_categoria'):
+            print(f"\n🏷️ Distribuição por categoria:")
+            for categoria, count in stats['tipos_categoria'].items():
+                print(f"  • Categoria {Colors.info(str(categoria))}: {Colors.success(str(count))} cadastros")
         
-        if stats['situacoes']:
+        if stats.get('tipos_situacao'):
             print(f"\n📈 Situações cadastrais:")
-            for situacao, count in stats['situacoes'].items():
+            for situacao, count in stats['tipos_situacao'].items():
                 print(f"  • Situação {Colors.info(str(situacao))}: {Colors.success(str(count))} cadastros")
     
     @staticmethod

@@ -12,20 +12,29 @@ from datetime import datetime
 
 from service.soap_client import CadastralSOAPClient, SOAPClientError
 from service.cache_service import CacheService
+from service.file_storage_service import FileStorageService
+from service.statistics_service import StatisticsService
 from model.data_models import CadastroImobiliario, dict_to_cadastro
 from config.settings import settings
 from interface.cli_interface import CLIInterface, ProgressTracker
 
 
 class CadastroService:
-    """Serviço de alto nível para extração completa de cadastros imobiliários"""
+    """
+    Serviço orquestrador para extração completa de cadastros imobiliários
+    Responsável por coordenar o fluxo de extração utilizando serviços especializados
+    """
     
     def __init__(self):
-        """Inicializa o serviço"""
+        """Inicializa o serviço e seus componentes especializados"""
         self._setup_logging()
         self._initialize_client()
         self.app_config = settings.get_app_config()
-        self.cache_service = CacheService()  # Inicializa o serviço de cache
+        
+        # Inicializar serviços especializados
+        self.cache_service = CacheService()
+        self.file_storage_service = FileStorageService(self.app_config.data_dir)
+        self.statistics_service = StatisticsService()
     
     def _setup_logging(self):
         """Configura logging"""
@@ -78,9 +87,9 @@ class CadastroService:
                     i + 1, len(intervalos), inicio, fim, len(cadastros_intervalo)
                 )
                 
-                # Salvamento periódico
+                # Salvamento periódico usando o serviço especializado
                 if len(todos_cadastros) > 0 and len(todos_cadastros) % self.app_config.save_interval == 0:
-                    self._salvar_progresso_parcial_interno(todos_cadastros)
+                    self.file_storage_service.salvar_progresso_parcial(todos_cadastros, sufixo="auto_backup")
                 
                 # Pausa entre requisições
                 if i < len(intervalos) - 1:
@@ -94,14 +103,25 @@ class CadastroService:
                 tempo_execucao
             )
             
-            # Salvar resultado final
+            # Salvar resultado final usando o serviço especializado
             arquivo_final = None
             if todos_cadastros:
-                arquivo_final = self.salvar_resultado_final_interno(todos_cadastros)
+                # Gerar estatísticas para incluir nos metadados
+                stats = self.statistics_service.gerar_estatisticas_completas(todos_cadastros)
+                codigos_info = self.statistics_service.analisar_codigos_cadastro(todos_cadastros)
                 
-                # Exibir estatísticas
-                stats = self.obter_estatisticas_interno(todos_cadastros)
-                codigos_info = self._analisar_codigos_interno(todos_cadastros)
+                metadados_extras = {
+                    'estatisticas': stats,
+                    'analise_codigos': codigos_info,
+                    'total_requisicoes': tracker.requisicoes_realizadas,
+                    'tempo_execucao': str(tempo_execucao)
+                }
+                
+                arquivo_final = self.file_storage_service.salvar_resultado_final(
+                    todos_cadastros, metadados_extras
+                )
+                
+                # Exibir estatísticas usando dados já calculados
                 CLIInterface.mostrar_estatisticas(stats, codigos_info)
             
             return {
@@ -117,7 +137,9 @@ class CadastroService:
             CLIInterface.mostrar_aviso("Operação interrompida pelo usuário")
             arquivo_parcial = None
             if todos_cadastros:
-                arquivo_parcial = self._salvar_progresso_parcial_interno(todos_cadastros, sufixo="interrupted")
+                arquivo_parcial = self.file_storage_service.salvar_progresso_parcial(
+                    todos_cadastros, sufixo="interrupted"
+                )
             return {
                 'sucesso': False,
                 'erro': 'Operação interrompida pelo usuário',
@@ -128,7 +150,9 @@ class CadastroService:
             CLIInterface.mostrar_erro(f"Erro durante extração: {e}")
             arquivo_parcial = None
             if todos_cadastros:
-                arquivo_parcial = self._salvar_progresso_parcial_interno(todos_cadastros, sufixo="error")
+                arquivo_parcial = self.file_storage_service.salvar_progresso_parcial(
+                    todos_cadastros, sufixo="error"
+                )
             return {
                 'sucesso': False,
                 'erro': str(e),
@@ -314,306 +338,64 @@ class CadastroService:
         except Exception:
             return False
     
-    def _salvar_progresso_parcial_interno(self, cadastros, sufixo=None):
-        """Salva progresso parcial durante extração"""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        sufixo_str = f"_{sufixo}" if sufixo else ""
-        arquivo = f"data/cadastros_progresso_{timestamp}{sufixo_str}.json"
-        
-        try:
-            os.makedirs("data", exist_ok=True)
-            with open(arquivo, 'w', encoding='utf-8') as f:
-                json.dump(cadastros, f, ensure_ascii=False, indent=2)
-            CLIInterface.mostrar_aviso(f"Progresso salvo em: {arquivo}")
-            return arquivo
-        except Exception as e:
-            CLIInterface.mostrar_erro(f"Erro ao salvar progresso: {e}")
-            return None
-    
-    def salvar_resultado_final_interno(self, cadastros):
+    # Métodos públicos para acesso aos serviços especializados
+    def obter_estatisticas_completas(self, cadastros):
         """
-        Salva resultado final da extração completa
-        
-        Args:
-            cadastros: Lista completa de cadastros
-            
-        Returns:
-            Nome do arquivo salvo
-        """
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        arquivo = f"data/cadastros_completo_{timestamp}.json"
-        
-        try:
-            os.makedirs("data", exist_ok=True)
-            
-            # Adicionar metadados
-            resultado = {
-                'metadados': {
-                    'data_extracao': datetime.now().isoformat(),
-                    'total_cadastros': len(cadastros),
-                    'versao_sistema': '2.0'
-                },
-                'cadastros': cadastros
-            }
-            
-            with open(arquivo, 'w', encoding='utf-8') as f:
-                json.dump(resultado, f, ensure_ascii=False, indent=2)
-            
-            CLIInterface.mostrar_aviso(f"Arquivo final salvo: {arquivo}")
-            return arquivo
-            
-        except Exception as e:
-            CLIInterface.mostrar_erro(f"Erro ao salvar arquivo final: {e}")
-            return None
-    
-    def obter_estatisticas_interno(self, cadastros):
-        """
-        Gera estatísticas dos cadastros extraídos
-        
-        Args:
-            cadastros: Lista de cadastros
-            
-        Returns:
-            Dictionary com estatísticas
-        """
-        if not cadastros:
-            return {'total': 0}
-        
-        # Contadores básicos
-        stats = {
-            'total': len(cadastros),
-            'com_proprietarios': 0,
-            'com_enderecos': 0,
-            'com_area_terreno': 0,
-            'com_area_construida': 0,
-            'tipos_situacao': {},
-            'tipos_categoria': {},
-            'zonas': {},
-            'area_total_terrenos': 0,
-            'area_total_construida': 0
-        }
-        
-        for cadastro in cadastros:
-            if isinstance(cadastro, dict):
-                # Contagem de propriedades
-                if cadastro.get('proprietariosbci'):
-                    stats['com_proprietarios'] += 1
-                
-                if cadastro.get('enderecos'):
-                    stats['com_enderecos'] += 1
-                
-                # Análise de áreas
-                area_terreno = cadastro.get('area_terreno')
-                if area_terreno and area_terreno > 0:
-                    stats['com_area_terreno'] += 1
-                    stats['area_total_terrenos'] += area_terreno
-                
-                area_construida = cadastro.get('area_construida')
-                if area_construida and area_construida > 0:
-                    stats['com_area_construida'] += 1
-                    stats['area_total_construida'] += area_construida
-                
-                # Contagem de situações
-                situacao = cadastro.get('situacao', 'Não informado')
-                stats['tipos_situacao'][situacao] = stats['tipos_situacao'].get(situacao, 0) + 1
-                
-                # Contagem de categorias
-                categoria = cadastro.get('categoria', 'Não informado')
-                stats['tipos_categoria'][categoria] = stats['tipos_categoria'].get(categoria, 0) + 1
-                
-                # Contagem de zonas
-                zoneamentos = cadastro.get('zoneamentos', [])
-                for zone in zoneamentos:
-                    if isinstance(zone, dict):
-                        zona = zone.get('zona', 'Não informado')
-                        stats['zonas'][zona] = stats['zonas'].get(zona, 0) + 1
-        
-        return stats
-    
-    def _analisar_codigos_interno(self, cadastros):
-        """
-        Analisa distribuição de códigos de cadastro
-        
-        Args:
-            cadastros: Lista de cadastros
-            
-        Returns:
-            Informações sobre códigos
-        """
-        if not cadastros:
-            CLIInterface.mostrar_erro("Nenhum cadastro fornecido para análise.")
-            return {
-                'total': 0,
-                'menor_codigo': None,
-                'maior_codigo': None,
-                'intervalo_cobertura': 0,
-                'densidade_ocupacao': 0
-            }
-        
-        codigos = []
-        for cadastro in cadastros:
-            if isinstance(cadastro, dict):
-                codigo = cadastro.get('codigo_cadastro')
-                if codigo is None:
-                    CLIInterface.mostrar_erro(f"Cadastro sem 'codigo_cadastro': {cadastro}")
-                    continue
-                try:
-                    codigo_int = int(codigo)
-                    codigos.append(codigo_int)
-                except (ValueError, TypeError):
-                    CLIInterface.mostrar_erro(f"Valor inválido para 'codigo_cadastro': {codigo} no cadastro {cadastro}")
-                    continue
-        
-        if not codigos:
-            CLIInterface.mostrar_erro("Nenhum código válido encontrado nos cadastros.")
-            return {
-                'total': 0,
-                'menor_codigo': None,
-                'maior_codigo': None,
-                'intervalo_cobertura': 0,
-                'densidade_ocupacao': 0
-            }
-        
-        try:
-            menor_codigo = min(codigos)
-            maior_codigo = max(codigos)
-            intervalo_cobertura = maior_codigo - menor_codigo + 1
-            densidade_ocupacao = len(codigos) / intervalo_cobertura * 100
-            return {
-                'total': len(codigos),
-                'menor_codigo': menor_codigo,
-                'maior_codigo': maior_codigo,
-                'intervalo_cobertura': intervalo_cobertura,
-                'densidade_ocupacao': densidade_ocupacao
-            }
-        except ValueError as e:
-            CLIInterface.mostrar_erro(f"Erro ao calcular estatísticas de códigos: {e}")
-            return {
-                'total': len(codigos),
-                'menor_codigo': None,
-                'maior_codigo': None,
-                'intervalo_cobertura': 0,
-                'densidade_ocupacao': 0
-            }
-    
-    def _salvar_progresso_parcial(self, cadastros, sufixo="progress"):
-        """
-        Salva progresso parcial da extração
-        
-        Args:
-            cadastros: Lista de cadastros para salvar
-            sufixo: Sufixo para identificar tipo de salvamento
-        """
-        try:
-            os.makedirs("./data", exist_ok=True)
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            filename = f"./data/cadastros_{sufixo}_{timestamp}.json"
-            
-            dados = {
-                "metadados": {
-                    "total_cadastros": len(cadastros),
-                    "timestamp_salvamento": datetime.now().isoformat(),
-                    "tipo_salvamento": sufixo,
-                    "versao": "1.0_producao"
-                },
-                "cadastros": cadastros
-            }
-            
-            with open(filename, 'w', encoding='utf-8') as f:
-                json.dump(dados, f, indent=2, ensure_ascii=False, default=str)
-            
-            CLIInterface.mostrar_salvamento_progresso()
-            
-        except Exception as e:
-            CLIInterface.mostrar_erro(f"Erro ao salvar progresso: {e}")
-    
-    def salvar_resultado_final(self, cadastros, filename="cadastros_completo.json"):
-        """
-        Salva resultado final com metadados completos
-        
-        Args:
-            cadastros: Lista completa de cadastros
-            filename: Nome do arquivo final
-        """
-        try:
-            os.makedirs("./data", exist_ok=True)
-            filepath = f"./data/{filename}"
-            
-            # Gerar estatísticas para metadados
-            stats = self.obter_estatisticas(cadastros)
-            codigos_info = self._analisar_codigos(cadastros)
-            
-            dados_completos = {
-                "metadados": {
-                    "total_cadastros": len(cadastros),
-                    "data_extracao": datetime.now().isoformat(),
-                    "metodo_extracao": "intervalos_oficiais_producao",
-                    "versao_sistema": "2.0",
-                    "estatisticas": stats,
-                    "analise_codigos": codigos_info,
-                    "validacao_completa": True
-                },
-                "cadastros": cadastros
-            }
-            
-            with open(filepath, 'w', encoding='utf-8') as f:
-                json.dump(dados_completos, f, indent=2, ensure_ascii=False, default=str)
-            
-            return filepath
-            
-        except Exception as e:
-            CLIInterface.mostrar_erro(f"Erro ao salvar resultado final: {e}")
-            return None
-    
-    def _analisar_codigos(self, cadastros):
-        """Analisa distribuição e características dos códigos extraídos"""
-        codigos = []
-        for cadastro in cadastros:
-            codigo = cadastro.get('codigo_cadastro')
-            if codigo and str(codigo).isdigit():
-                codigos.append(int(codigo))
-        
-        if not codigos:
-            return {}
-        
-        codigos.sort()
-        return {
-            "menor": min(codigos),
-            "maior": max(codigos),
-            "unicos": len(set(codigos)),
-            "densidade": (len(codigos) / (max(codigos) - min(codigos) + 1)) * 100 if codigos else 0,
-            "range_total": max(codigos) - min(codigos) + 1 if codigos else 0
-        }
-    
-    def obter_estatisticas(self, cadastros):
-        """
-        Gera estatísticas detalhadas dos cadastros extraídos
+        Gera estatísticas completas usando o serviço especializado
         
         Args:
             cadastros: Lista de cadastros para análise
             
         Returns:
-            Dicionário com estatísticas completas
+            Estatísticas completas
         """
-        if not cadastros:
-            return {"total": 0, "tipos": {}, "situacoes": {}}
+        return self.statistics_service.gerar_estatisticas_completas(cadastros)
+    
+    def analisar_codigos_cadastro(self, cadastros):
+        """
+        Analisa códigos de cadastro usando o serviço especializado
         
-        tipos = {}
-        situacoes = {}
-        
-        for cadastro in cadastros:
-            # Análise de tipos
-            tipo = cadastro.get('tipo_cadastro')
-            if tipo:
-                tipos[tipo] = tipos.get(tipo, 0) + 1
+        Args:
+            cadastros: Lista de cadastros para análise
             
-            # Análise de situações
-            situacao = cadastro.get('situacao_cadastral')
-            if situacao:
-                situacoes[situacao] = situacoes.get(situacao, 0) + 1
+        Returns:
+            Análise de códigos
+        """
+        return self.statistics_service.analisar_codigos_cadastro(cadastros)
+    
+    def salvar_dados_finais(self, cadastros, metadados=None):
+        """
+        Salva dados finais usando o serviço especializado
         
-        return {
-            "total": len(cadastros),
-            "tipos": tipos,
-            "situacoes": situacoes
-        }
+        Args:
+            cadastros: Lista de cadastros
+            metadados: Metadados opcionais
+            
+        Returns:
+            Caminho do arquivo salvo
+        """
+        return self.file_storage_service.salvar_resultado_final(cadastros, metadados)
+    
+    def carregar_dados_salvos(self, caminho_arquivo):
+        """
+        Carrega dados salvos usando o serviço especializado
+        
+        Args:
+            caminho_arquivo: Caminho do arquivo
+            
+        Returns:
+            Dados carregados
+        """
+        return self.file_storage_service.carregar_dados_salvos(caminho_arquivo)
+    
+    def listar_arquivos_salvos(self, tipo="todos"):
+        """
+        Lista arquivos salvos usando o serviço especializado
+        
+        Args:
+            tipo: Tipo de arquivo a listar
+            
+        Returns:
+            Lista de arquivos
+        """
+        return self.file_storage_service.listar_arquivos_salvos(tipo)

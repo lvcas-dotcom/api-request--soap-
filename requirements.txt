@@ -1,0 +1,19 @@
+# Dependências básicas
+requests==2.31.0
+zeep==4.2.1
+lxml==4.9.3
+
+# Interface de usuário
+rich==13.7.0
+colorama==0.4.6
+
+# Banco de dados PostgreSQL
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+
+# Desenvolvimento
+python-dotenv==1.0.0
+typing-extensions==4.8.0
+
+# Utilidades
+pytz==2023.3

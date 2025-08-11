@@ -12,7 +12,7 @@ from datetime import datetime
 
 from service.soap_client import CadastralSOAPClient, SOAPClientError
 from service.cache_service import CacheService
-from service.file_storage_service import FileStorageService
+from service.storage_service import FileStorageService
 from service.statistics_service import StatisticsService
 from model.data_models import CadastroImobiliario, dict_to_cadastro
 from config.settings import settings
@@ -48,7 +48,7 @@ class CadastroService:
         except Exception as e:
             raise Exception(f"Erro ao inicializar cliente SOAP: {str(e)}")
     
-    def extrair_todos_cadastros(self, codigo_inicio=0, codigo_fim=10000, intervalo_size=100):
+    def extrair_todos_cadastros(self, codigo_inicio=0, codigo_fim=200000, intervalo_size=100):
         """
         Extrai TODOS os cadastros imobiliários do sistema usando nova arquitetura
         

@@ -72,15 +72,13 @@ class CLIInterface:
     @staticmethod
     def mostrar_inicio_extracao():
         """Exibe informações de início da extração"""
-        print(f"\n{Colors.progress('🚀 INICIANDO EXTRAÇÃO COMPLETA')}")
         print(Colors.info(SEPARATOR_THIN))
     
     @staticmethod
     def mostrar_progresso_inicial(total_intervalos):
         """Exibe informações iniciais do progresso"""
-        print(Colors.info(f"📋 Total de intervalos: {total_intervalos}"))
-        print(Colors.info(f"⚙️  Método: Intervalos oficiais (0-100, 101-200...)"))
-        print(Colors.progress(f"🔥 Processamento iniciado!\n"))
+        print(Colors.info(f"⚙️  Paginação (0-100, 101-200...)"))
+        print(Colors.warning("⏳ Este processo pode demorar"))
     
     @staticmethod
     def mostrar_progresso_intervalo(atual, total, inicio, fim, cadastros_encontrados):

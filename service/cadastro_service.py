@@ -1,47 +1,47 @@
 """
-Cadastro Service - Serviço para extração de cadastros imobiliários
-Responsável pela comunicação com API SOAP e processamento de dados
+Cadastro Service - Serviço de alto nível para extração de cadastros imobiliários
+Usa o novo cliente SOAP completo e modelos de dados padronizados
 """
 
-from zeep import Client, Settings
-from zeep.helpers import serialize_object
-from requests.auth import HTTPBasicAuth
-from requests import Session
-from zeep.transports import Transport
+from typing import Dict, List, Any, Optional
 import logging
 import json
 import os
 import time
 from datetime import datetime
+
+from service.soap_client import CadastralSOAPClient, SOAPClientError
+from service.cache_service import CacheService
+from model.data_models import CadastroImobiliario, dict_to_cadastro
+from config.settings import settings
 from interface.cli_interface import CLIInterface, ProgressTracker
 
 
 class CadastroService:
-    """Serviço para extração completa de cadastros imobiliários via SOAP"""
+    """Serviço de alto nível para extração completa de cadastros imobiliários"""
     
     def __init__(self):
-        """Inicializa o serviço SOAP com configurações otimizadas"""
-        self._configurar_logging()
-        self._inicializar_client()
+        """Inicializa o serviço"""
+        self._setup_logging()
+        self._initialize_client()
+        self.app_config = settings.get_app_config()
+        self.cache_service = CacheService()  # Inicializa o serviço de cache
     
-    def _configurar_logging(self):
-        """Configura logging para suprimir mensagens desnecessárias"""
+    def _setup_logging(self):
+        """Configura logging"""
         logging.getLogger('zeep').setLevel(logging.CRITICAL)
         logging.getLogger('isodate').setLevel(logging.CRITICAL)
     
-    def _inicializar_client(self):
-        """Inicializa cliente SOAP com autenticação"""
-        wsdl_path = "./wsdl/clevelandia.wsdl"
-        
-        # Configurar autenticação HTTP básica
-        session = Session()
-        session.auth = HTTPBasicAuth('18236979000167', 'Tributech@2528')
-        
-        self.client = Client(wsdl=wsdl_path, transport=Transport(session=session))
+    def _initialize_client(self):
+        """Inicializa cliente SOAP"""
+        try:
+            self.soap_client = CadastralSOAPClient()
+        except Exception as e:
+            raise Exception(f"Erro ao inicializar cliente SOAP: {str(e)}")
     
     def extrair_todos_cadastros(self, codigo_inicio=0, codigo_fim=10000, intervalo_size=100):
         """
-        Extrai TODOS os cadastros imobiliários do sistema
+        Extrai TODOS os cadastros imobiliários do sistema usando nova arquitetura
         
         Args:
             codigo_inicio: Código inicial para busca
@@ -49,8 +49,12 @@ class CadastroService:
             intervalo_size: Tamanho de cada intervalo (máximo 100 por API)
         
         Returns:
-            Lista completa de todos os cadastros encontrados
+            Resultado completo da extração
         """
+        # Validar tamanho do intervalo
+        if intervalo_size > self.app_config.max_interval_size:
+            intervalo_size = self.app_config.max_interval_size
+        
         # Preparar intervalos
         intervalos = self._gerar_intervalos(codigo_inicio, codigo_fim, intervalo_size)
         CLIInterface.mostrar_progresso_inicial(len(intervalos))
@@ -58,7 +62,6 @@ class CadastroService:
         # Inicializar tracking
         tracker = ProgressTracker(len(intervalos))
         todos_cadastros = []
-        save_interval = 1000  # Salvar a cada 1000 cadastros
         
         try:
             # Processar todos os intervalos
@@ -76,12 +79,12 @@ class CadastroService:
                 )
                 
                 # Salvamento periódico
-                if len(todos_cadastros) > 0 and len(todos_cadastros) % save_interval == 0:
-                    self._salvar_progresso_parcial(todos_cadastros)
+                if len(todos_cadastros) > 0 and len(todos_cadastros) % self.app_config.save_interval == 0:
+                    self._salvar_progresso_parcial_interno(todos_cadastros)
                 
-                # Pausa entre requisições para não sobrecarregar API
+                # Pausa entre requisições
                 if i < len(intervalos) - 1:
-                    time.sleep(0.15)
+                    time.sleep(self.app_config.request_delay)
             
             # Conclusão
             tempo_execucao = tracker.obter_tempo_decorrido()
@@ -94,11 +97,11 @@ class CadastroService:
             # Salvar resultado final
             arquivo_final = None
             if todos_cadastros:
-                arquivo_final = self.salvar_resultado_final(todos_cadastros)
+                arquivo_final = self.salvar_resultado_final_interno(todos_cadastros)
                 
                 # Exibir estatísticas
-                stats = self.obter_estatisticas(todos_cadastros)
-                codigos_info = self._analisar_codigos(todos_cadastros)
+                stats = self.obter_estatisticas_interno(todos_cadastros)
+                codigos_info = self._analisar_codigos_interno(todos_cadastros)
                 CLIInterface.mostrar_estatisticas(stats, codigos_info)
             
             return {
@@ -114,7 +117,7 @@ class CadastroService:
             CLIInterface.mostrar_aviso("Operação interrompida pelo usuário")
             arquivo_parcial = None
             if todos_cadastros:
-                arquivo_parcial = self._salvar_progresso_parcial(todos_cadastros, sufixo="interrupted")
+                arquivo_parcial = self._salvar_progresso_parcial_interno(todos_cadastros, sufixo="interrupted")
             return {
                 'sucesso': False,
                 'erro': 'Operação interrompida pelo usuário',
@@ -125,7 +128,7 @@ class CadastroService:
             CLIInterface.mostrar_erro(f"Erro durante extração: {e}")
             arquivo_parcial = None
             if todos_cadastros:
-                arquivo_parcial = self._salvar_progresso_parcial(todos_cadastros, sufixo="error")
+                arquivo_parcial = self._salvar_progresso_parcial_interno(todos_cadastros, sufixo="error")
             return {
                 'sucesso': False,
                 'erro': str(e),
@@ -143,7 +146,7 @@ class CadastroService:
     
     def _buscar_por_intervalo(self, codigo_inicio, codigo_fim):
         """
-        Busca cadastros por intervalo específico usando API oficial
+        Busca cadastros por intervalo específico usando novo cliente SOAP
         
         Args:
             codigo_inicio: Código inicial do intervalo
@@ -153,53 +156,77 @@ class CadastroService:
             Lista de cadastros encontrados no intervalo
         """
         codigo_intervalo = f"{codigo_inicio}-{codigo_fim}"
-        
-        entrada = {
-            'cpf_monitoracao': '02644794919',
-            'codigo_cadastro': codigo_intervalo,
-            'inscricao_imobiliaria': '',
-            'proprietario_cpfcnpj': '',
-            'codigo_terreno': '',
-            'data_hora_alteracao': '',
-            'tipo_consulta': '',
-            'situacao': ''
-        }
-        
+
+        # Tentar carregar do cache
+        cadastros_cache = self.cache_service.carregar_cache(codigo_intervalo)
+        if cadastros_cache is not None:
+            return cadastros_cache
+
         try:
-            response = self.client.service.buscaCadastroImobiliarioGeral(entrada=entrada)
-            retorno = serialize_object(response)
+            # Usar novo cliente SOAP
+            cadastros_raw = self.soap_client.buscar_cadastro_geral(
+                codigo_cadastro=codigo_intervalo,
+                tipo_consulta=1,
+                situacao=1
+            )
             
-            # Processar resposta
-            cadastros = []
-            if isinstance(retorno, dict):
-                cadastros = retorno.get("cadastros", [])
-            elif isinstance(retorno, list):
-                cadastros = retorno
+            # Processar e normalizar dados
+            cadastros_processados = []
+            for cadastro_raw in cadastros_raw:
+                cadastro_processado = self._processar_cadastro(cadastro_raw)
+                if cadastro_processado:
+                    cadastros_processados.append(cadastro_processado)
+
+            # Salvar no cache
+            self.cache_service.salvar_cache(codigo_intervalo, cadastros_processados)
+
+            return cadastros_processados
             
-            # Processar e retornar cadastros
-            return [self._processar_cadastro(cadastro) for cadastro in cadastros]
-            
+        except SOAPClientError as e:
+            CLIInterface.mostrar_erro(f"Erro SOAP no intervalo {codigo_intervalo}: {e}")
+            return []
         except Exception as e:
-            CLIInterface.mostrar_erro(f"Erro no intervalo {codigo_intervalo}: {e}")
+            CLIInterface.mostrar_erro(f"Erro inesperado no intervalo {codigo_intervalo}: {e}")
             return []
     
-    def _processar_cadastro(self, cadastro):
+    def _processar_cadastro(self, cadastro_raw):
         """
-        Processa um cadastro individual, corrigindo formatos de data
+        Processa um cadastro individual, normalizando dados
         
         Args:
-            cadastro: Cadastro bruto da API
+            cadastro_raw: Cadastro bruto da API
             
         Returns:
-            Cadastro processado com datas normalizadas
+            Cadastro processado e normalizado
         """
-        if isinstance(cadastro, dict):
-            # Normalizar datas brasileiras para ISO
-            if 'data_cadastro' in cadastro:
-                cadastro['data_cadastro'] = self._converter_data_brasileira(
-                    cadastro['data_cadastro']
+        if not isinstance(cadastro_raw, dict):
+            return None
+        
+        try:
+            # Normalizar datas
+            if 'data_cadastro' in cadastro_raw:
+                cadastro_raw['data_cadastro'] = self._converter_data_brasileira(
+                    cadastro_raw['data_cadastro']
                 )
-        return cadastro
+            
+            # Normalizar campos numéricos
+            for campo in ['area_terreno', 'area_construida', 'area_construida_averbada', 'area_total_construida']:
+                if campo in cadastro_raw and cadastro_raw[campo]:
+                    try:
+                        cadastro_raw[campo] = float(str(cadastro_raw[campo]).replace(',', '.'))
+                    except (ValueError, TypeError):
+                        cadastro_raw[campo] = None
+            
+            # Garantir que listas vazias sejam tratadas corretamente
+            for lista_campo in ['proprietariosbci', 'enderecos', 'testadas', 'caracteristicas', 'subreceitas', 'zoneamentos']:
+                if lista_campo not in cadastro_raw or cadastro_raw[lista_campo] is None:
+                    cadastro_raw[lista_campo] = []
+            
+            return cadastro_raw
+            
+        except Exception as e:
+            CLIInterface.mostrar_erro(f"Erro ao processar cadastro: {e}")
+            return None
     
     def _converter_data_brasileira(self, data_str):
         """
@@ -219,6 +246,255 @@ class CadastroService:
             return data_obj.strftime("%Y-%m-%d")
         except ValueError:
             return data_str
+    
+    def buscar_cadastro_completo(self, codigo_cadastro: str) -> Optional[CadastroImobiliario]:
+        """
+        Busca cadastro completo com todos os dados relacionados
+        
+        Args:
+            codigo_cadastro: Código do cadastro
+            
+        Returns:
+            Objeto CadastroImobiliario completo ou None
+        """
+        try:
+            # Buscar dados principais
+            dados_principais = self.soap_client.buscar_cadastro_especifico(
+                codigo_cadastro=codigo_cadastro
+            )
+            
+            if not dados_principais:
+                return None
+            
+            # Buscar dados relacionados
+            proprietarios = self.soap_client.buscar_proprietarios(codigo_cadastro=codigo_cadastro)
+            enderecos = self.soap_client.buscar_enderecos(codigo_cadastro)
+            testadas = self.soap_client.buscar_testadas(codigo_cadastro)
+            caracteristicas = self.soap_client.buscar_caracteristicas(codigo_cadastro)
+            subreceitas = self.soap_client.buscar_subreceitas(codigo_cadastro)
+            zoneamentos = self.soap_client.buscar_zoneamentos(codigo_cadastro)
+            
+            # Converter zoneamentos para objetos Zoneamento, se necessário
+            from model.data_models import Zoneamento
+            zoneamentos_objs = []
+            for z in zoneamentos:
+                if isinstance(z, Zoneamento):
+                    zoneamentos_objs.append(z)
+                elif isinstance(z, dict):
+                    zoneamentos_objs.append(Zoneamento(**z))
+                else:
+                    continue
+            
+            # Montar objeto completo
+            cadastro = dict_to_cadastro(dados_principais)
+            from model.data_models import Proprietario, Endereco, Testada, BlocoItem, SubReceita
+
+            cadastro.proprietarios = [Proprietario(**p) for p in proprietarios]
+            cadastro.enderecos = [Endereco(**e) for e in enderecos]
+            cadastro.testadas = [Testada(**t) for t in testadas]
+            cadastro.caracteristicas = [BlocoItem(**c) for c in caracteristicas]
+            cadastro.subreceitas = [SubReceita(**s) for s in subreceitas]
+            cadastro.zoneamentos = zoneamentos_objs
+            
+            return cadastro
+            
+        except Exception as e:
+            CLIInterface.mostrar_erro(f"Erro ao buscar cadastro completo: {e}")
+            return None
+    
+    def testar_conexao(self) -> bool:
+        """
+        Testa conexão com o serviço SOAP
+        
+        Returns:
+            True se conexão estiver funcionando
+        """
+        try:
+            return self.soap_client.testar_conexao()
+        except Exception:
+            return False
+    
+    def _salvar_progresso_parcial_interno(self, cadastros, sufixo=None):
+        """Salva progresso parcial durante extração"""
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        sufixo_str = f"_{sufixo}" if sufixo else ""
+        arquivo = f"data/cadastros_progresso_{timestamp}{sufixo_str}.json"
+        
+        try:
+            os.makedirs("data", exist_ok=True)
+            with open(arquivo, 'w', encoding='utf-8') as f:
+                json.dump(cadastros, f, ensure_ascii=False, indent=2)
+            CLIInterface.mostrar_aviso(f"Progresso salvo em: {arquivo}")
+            return arquivo
+        except Exception as e:
+            CLIInterface.mostrar_erro(f"Erro ao salvar progresso: {e}")
+            return None
+    
+    def salvar_resultado_final_interno(self, cadastros):
+        """
+        Salva resultado final da extração completa
+        
+        Args:
+            cadastros: Lista completa de cadastros
+            
+        Returns:
+            Nome do arquivo salvo
+        """
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        arquivo = f"data/cadastros_completo_{timestamp}.json"
+        
+        try:
+            os.makedirs("data", exist_ok=True)
+            
+            # Adicionar metadados
+            resultado = {
+                'metadados': {
+                    'data_extracao': datetime.now().isoformat(),
+                    'total_cadastros': len(cadastros),
+                    'versao_sistema': '2.0'
+                },
+                'cadastros': cadastros
+            }
+            
+            with open(arquivo, 'w', encoding='utf-8') as f:
+                json.dump(resultado, f, ensure_ascii=False, indent=2)
+            
+            CLIInterface.mostrar_aviso(f"Arquivo final salvo: {arquivo}")
+            return arquivo
+            
+        except Exception as e:
+            CLIInterface.mostrar_erro(f"Erro ao salvar arquivo final: {e}")
+            return None
+    
+    def obter_estatisticas_interno(self, cadastros):
+        """
+        Gera estatísticas dos cadastros extraídos
+        
+        Args:
+            cadastros: Lista de cadastros
+            
+        Returns:
+            Dictionary com estatísticas
+        """
+        if not cadastros:
+            return {'total': 0}
+        
+        # Contadores básicos
+        stats = {
+            'total': len(cadastros),
+            'com_proprietarios': 0,
+            'com_enderecos': 0,
+            'com_area_terreno': 0,
+            'com_area_construida': 0,
+            'tipos_situacao': {},
+            'tipos_categoria': {},
+            'zonas': {},
+            'area_total_terrenos': 0,
+            'area_total_construida': 0
+        }
+        
+        for cadastro in cadastros:
+            if isinstance(cadastro, dict):
+                # Contagem de propriedades
+                if cadastro.get('proprietariosbci'):
+                    stats['com_proprietarios'] += 1
+                
+                if cadastro.get('enderecos'):
+                    stats['com_enderecos'] += 1
+                
+                # Análise de áreas
+                area_terreno = cadastro.get('area_terreno')
+                if area_terreno and area_terreno > 0:
+                    stats['com_area_terreno'] += 1
+                    stats['area_total_terrenos'] += area_terreno
+                
+                area_construida = cadastro.get('area_construida')
+                if area_construida and area_construida > 0:
+                    stats['com_area_construida'] += 1
+                    stats['area_total_construida'] += area_construida
+                
+                # Contagem de situações
+                situacao = cadastro.get('situacao', 'Não informado')
+                stats['tipos_situacao'][situacao] = stats['tipos_situacao'].get(situacao, 0) + 1
+                
+                # Contagem de categorias
+                categoria = cadastro.get('categoria', 'Não informado')
+                stats['tipos_categoria'][categoria] = stats['tipos_categoria'].get(categoria, 0) + 1
+                
+                # Contagem de zonas
+                zoneamentos = cadastro.get('zoneamentos', [])
+                for zone in zoneamentos:
+                    if isinstance(zone, dict):
+                        zona = zone.get('zona', 'Não informado')
+                        stats['zonas'][zona] = stats['zonas'].get(zona, 0) + 1
+        
+        return stats
+    
+    def _analisar_codigos_interno(self, cadastros):
+        """
+        Analisa distribuição de códigos de cadastro
+        
+        Args:
+            cadastros: Lista de cadastros
+            
+        Returns:
+            Informações sobre códigos
+        """
+        if not cadastros:
+            CLIInterface.mostrar_erro("Nenhum cadastro fornecido para análise.")
+            return {
+                'total': 0,
+                'menor_codigo': None,
+                'maior_codigo': None,
+                'intervalo_cobertura': 0,
+                'densidade_ocupacao': 0
+            }
+        
+        codigos = []
+        for cadastro in cadastros:
+            if isinstance(cadastro, dict):
+                codigo = cadastro.get('codigo_cadastro')
+                if codigo is None:
+                    CLIInterface.mostrar_erro(f"Cadastro sem 'codigo_cadastro': {cadastro}")
+                    continue
+                try:
+                    codigo_int = int(codigo)
+                    codigos.append(codigo_int)
+                except (ValueError, TypeError):
+                    CLIInterface.mostrar_erro(f"Valor inválido para 'codigo_cadastro': {codigo} no cadastro {cadastro}")
+                    continue
+        
+        if not codigos:
+            CLIInterface.mostrar_erro("Nenhum código válido encontrado nos cadastros.")
+            return {
+                'total': 0,
+                'menor_codigo': None,
+                'maior_codigo': None,
+                'intervalo_cobertura': 0,
+                'densidade_ocupacao': 0
+            }
+        
+        try:
+            menor_codigo = min(codigos)
+            maior_codigo = max(codigos)
+            intervalo_cobertura = maior_codigo - menor_codigo + 1
+            densidade_ocupacao = len(codigos) / intervalo_cobertura * 100
+            return {
+                'total': len(codigos),
+                'menor_codigo': menor_codigo,
+                'maior_codigo': maior_codigo,
+                'intervalo_cobertura': intervalo_cobertura,
+                'densidade_ocupacao': densidade_ocupacao
+            }
+        except ValueError as e:
+            CLIInterface.mostrar_erro(f"Erro ao calcular estatísticas de códigos: {e}")
+            return {
+                'total': len(codigos),
+                'menor_codigo': None,
+                'maior_codigo': None,
+                'intervalo_cobertura': 0,
+                'densidade_ocupacao': 0
+            }
     
     def _salvar_progresso_parcial(self, cadastros, sufixo="progress"):
         """

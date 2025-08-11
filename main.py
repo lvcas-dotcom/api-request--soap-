@@ -52,23 +52,14 @@ def executar_extracao():
         servico = CadastroService()
         print(Colors.success("✅ Conexão com API estabelecida"))
         
-        # Informações sobre a extração
-        print(f"\n{Colors.warning('📊 CONFIGURAÇÃO DA EXTRAÇÃO:')}")
-        print(f"  {ICONS['gear']} Método: Intervalos oficiais (0-100, 101-200...)")
-        print(f"  {ICONS['data']} Tipos: TODOS os tipos cadastrais")
-        print(f"  {ICONS['check']} Situações: TODAS as situações")
-        print(f"  {ICONS['time']} Estimativa: ~30 minutos para extração completa")
-        
         # Confirmação visual
-        print(f"\n{Colors.progress('🚀 INICIANDO PROCESSAMENTO...')}")
-        print(Colors.warning("⚠️  ATENÇÃO: Este processo pode demorar ~30 minutos"))
-        print(Colors.info("📊 Processando intervalos de 0 até 10000..."))
+        print(f"\n{Colors.progress('🚀 Iniciando Processamento...')}")
         CLIInterface.loading_spinner("Preparando extração", 2)
         
         print(f"\n{Colors.header('=' * 60)}")
-        print(Colors.progress("🔥 EXTRAÇÃO EM ANDAMENTO - NÃO FECHE O PROGRAMA"))
+        print(Colors.progress("                 🔥 PROCESSAMENTO INICIADO!"))
         print(Colors.header("=" * 60))
-        
+    
         # Executar extração
         resultado = servico.extrair_todos_cadastros()
         

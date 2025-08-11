@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environments
+.env
+*.env
+
+# Logs
+*.log
+
+# Data
+/data/cache/
+/data/cadastros_progresso_*.json
+/data/cadastros_completo_*.json
+
+# IDEs
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+
+# Test coverage reports
+htmlcov/
+.tox/
+.coverage
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyInstaller
+*.spec
+
+# MyPy
+.mypy_cache/
+
+# Pyre
+.pyre/
+
+# Caches
+*.egg-info/
+.eggs/
+*.cache

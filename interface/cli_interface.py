@@ -63,12 +63,12 @@ class CLIInterface:
                 elif escolha == "2":
                     return "banco"
                 elif escolha == "0":
-                    print(Colors.success("👋 Saindo do sistema..."))
+                    print(Colors.warning("👋 Saindo do sistema..."))
                     return "sair"
                 else:
                     print(Colors.error("❌ Opção inválida! Digite 1, 2 ou 0."))
             except KeyboardInterrupt:
-                print(Colors.success("\n👋 Saindo do sistema..."))
+                print(Colors.warning("\n👋 Saindo do sistema..."))
                 return "sair"
 
     @staticmethod

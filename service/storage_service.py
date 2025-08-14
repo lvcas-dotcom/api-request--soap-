@@ -32,7 +32,9 @@ class FileStorageService:
         """Garante que o diretório de dados existe"""
         os.makedirs(self.data_dir, exist_ok=True)
 
-    def salvar_progresso_parcial(self, cadastros: List[Dict[str, Any]], sufixo: Optional[str] = None) -> Optional[str]:
+    def salvar_progresso_parcial(
+        self, cadastros: List[Dict[str, Any]], sufixo: Optional[str] = None
+    ) -> Optional[str]:
         """
         Salva progresso parcial durante a extração
 
@@ -45,10 +47,12 @@ class FileStorageService:
         """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         sufixo_str = f"_{sufixo}" if sufixo else ""
-        arquivo = os.path.join(self.data_dir, f"cadastros_progresso_{timestamp}{sufixo_str}.json")
+        arquivo = os.path.join(
+            self.data_dir, f"cadastros_progresso_{timestamp}{sufixo_str}.json"
+        )
 
         try:
-            with open(arquivo, 'w', encoding='utf-8') as f:
+            with open(arquivo, "w", encoding="utf-8") as f:
                 json.dump(cadastros, f, ensure_ascii=False, indent=2)
 
             CLIInterface.mostrar_aviso(f"Progresso salvo em: {arquivo}")
@@ -58,8 +62,11 @@ class FileStorageService:
             CLIInterface.mostrar_erro(f"Erro ao salvar progresso: {e}")
             return None
 
-    def salvar_resultado_final(self, cadastros: List[Dict[str, Any]],
-                              metadados: Optional[Dict[str, Any]] = None) -> Optional[str]:
+    def salvar_resultado_final(
+        self,
+        cadastros: List[Dict[str, Any]],
+        metadados: Optional[Dict[str, Any]] = None,
+    ) -> Optional[str]:
         """
         Salva resultado final da extração completa com metadados
 
@@ -71,15 +78,15 @@ class FileStorageService:
             Caminho do arquivo salvo ou None em caso de erro
         """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        arquivo = os.path.join(self.data_dir, f"cadastros_completo_{timestamp}.json")
+        arquivo = os.path.join(self.data_dir, f"cadastros_{timestamp}.json")
 
         try:
             # Preparar metadados padrão
             metadados_completos = {
-                'data_extracao': datetime.now().isoformat(),
-                'total_cadastros': len(cadastros),
-                'versao_sistema': '2.0',
-                'metodo_extracao': 'intervalos_automatizados'
+                "data_extracao": datetime.now().isoformat(),
+                "total_cadastros": len(cadastros),
+                "versao_sistema": "2.0",
+                "metodo_extracao": "intervalos_automatizados",
             }
 
             # Mesclar com metadados fornecidos
@@ -87,12 +94,9 @@ class FileStorageService:
                 metadados_completos.update(metadados)
 
             # Estrutura final do arquivo
-            resultado = {
-                'metadados': metadados_completos,
-                'cadastros': cadastros
-            }
+            resultado = {"metadados": metadados_completos, "cadastros": cadastros}
 
-            with open(arquivo, 'w', encoding='utf-8') as f:
+            with open(arquivo, "w", encoding="utf-8") as f:
                 json.dump(resultado, f, ensure_ascii=False, indent=2)
 
             CLIInterface.mostrar_aviso(f"Arquivo final salvo: {arquivo}")
@@ -102,8 +106,12 @@ class FileStorageService:
             CLIInterface.mostrar_erro(f"Erro ao salvar arquivo final: {e}")
             return None
 
-    def salvar_com_backup_automatico(self, cadastros: List[Dict[str, Any]],
-                                   total_processados: int, save_interval: int) -> Optional[str]:
+    def salvar_com_backup_automatico(
+        self,
+        cadastros: List[Dict[str, Any]],
+        total_processados: int,
+        save_interval: int,
+    ) -> Optional[str]:
         """
         Verifica e executa backup automático baseado no intervalo configurado
 
@@ -134,14 +142,14 @@ class FileStorageService:
                 CLIInterface.mostrar_erro(f"Arquivo não encontrado: {caminho_arquivo}")
                 return None
 
-            with open(caminho_arquivo, 'r', encoding='utf-8') as f:
+            with open(caminho_arquivo, "r", encoding="utf-8") as f:
                 dados = json.load(f)
 
             # For compatibility, set default values for required parameters
             CLIInterface.mostrar_conclusao(
                 f"Dados carregados de: {caminho_arquivo}",
                 total_requisicoes=0,
-                tempo_execucao=0.0
+                tempo_execucao=0.0,
             )
             return dados
 
@@ -178,7 +186,9 @@ class FileStorageService:
             CLIInterface.mostrar_erro(f"Erro ao listar arquivos: {e}")
             return []
 
-    def obter_informacoes_arquivo(self, caminho_arquivo: str) -> Optional[Dict[str, Any]]:
+    def obter_informacoes_arquivo(
+        self, caminho_arquivo: str
+    ) -> Optional[Dict[str, Any]]:
         """
         Obtém informações básicas sobre um arquivo salvo
 
@@ -197,21 +207,21 @@ class FileStorageService:
 
             # Tentar extrair informações do nome do arquivo
             info = {
-                'nome': nome_arquivo,
-                'caminho': caminho_arquivo,
-                'tamanho_bytes': stat.st_size,
-                'tamanho_mb': round(stat.st_size / (1024 * 1024), 2),
-                'data_modificacao': datetime.fromtimestamp(stat.st_mtime).isoformat(),
-                'tipo': 'progresso' if 'progresso' in nome_arquivo else 'completo'
+                "nome": nome_arquivo,
+                "caminho": caminho_arquivo,
+                "tamanho_bytes": stat.st_size,
+                "tamanho_mb": round(stat.st_size / (1024 * 1024), 2),
+                "data_modificacao": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                "tipo": "progresso" if "progresso" in nome_arquivo else "completo",
             }
 
             # Tentar carregar metadados se disponível
             try:
                 dados = self.carregar_dados_salvos(caminho_arquivo)
-                if dados and 'metadados' in dados:
-                    info['metadados'] = dados['metadados']
-                if dados and 'cadastros' in dados:
-                    info['total_cadastros'] = len(dados['cadastros'])
+                if dados and "metadados" in dados:
+                    info["metadados"] = dados["metadados"]
+                if dados and "cadastros" in dados:
+                    info["total_cadastros"] = len(dados["cadastros"])
             except:
                 pass  # Ignorar erros ao carregar metadados
 
@@ -276,15 +286,15 @@ class FileStorageService:
                 return False
 
             # Validações básicas
-            if 'cadastros' not in dados:
+            if "cadastros" not in dados:
                 return False
 
-            if not isinstance(dados['cadastros'], list):
+            if not isinstance(dados["cadastros"], list):
                 return False
 
             # Validar se há pelo menos um cadastro válido
-            if len(dados['cadastros']) > 0:
-                primeiro_cadastro = dados['cadastros'][0]
+            if len(dados["cadastros"]) > 0:
+                primeiro_cadastro = dados["cadastros"][0]
                 if not isinstance(primeiro_cadastro, dict):
                     return False
 

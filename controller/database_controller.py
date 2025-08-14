@@ -154,7 +154,7 @@ class DatabaseController:
             arquivos_completos = self.file_service.listar_arquivos_salvos("completo")
             arquivos_progresso = self.file_service.listar_arquivos_salvos("progresso")
 
-            CLIInterface.mostrar_arquivo_salvo("📁 Arquivos disponíveis:")
+            CLIInterface.mostrar_aviso("📁 Arquivos disponíveis:")
 
             if arquivos_completos:
                 print("\n🏆 Arquivos completos:")

@@ -42,6 +42,7 @@ class DatabaseService:
             )
 
             self.Session = sessionmaker(bind=self.engine)
+            print(Colors.success("✅ Conexão com PostgreSQL estabelecida"))
 
         except Exception as e:
             CLIInterface.mostrar_erro(f"Erro ao conectar com PostgreSQL: {e}")

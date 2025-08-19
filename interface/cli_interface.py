@@ -17,31 +17,41 @@ class CLIInterface:
         import sys
         import time
         import os
-        from interface.styles.ascii_art import HEADER_ASCII, PROGRESS_BAR_FULL, PROGRESS_BAR_EMPTY
+        from interface.styles.ascii_art import (
+            HEADER_ASCII,
+            PROGRESS_BAR_FULL,
+            PROGRESS_BAR_EMPTY,
+        )
         from interface.styles.colors import Colors
 
         # Mostrar header
         print(Colors.header(HEADER_ASCII))
         time.sleep(0.5)
 
-
         # Mostrar texto direto
         print(Colors.progress("\nCarregando aplicação..."))
 
         # Barra de progresso fake
         total = 30
-        for i in range(total+1):
-            barra = Colors.success(PROGRESS_BAR_FULL * i) + Colors.warning(PROGRESS_BAR_EMPTY * (total - i))
-            print(f"\r[{barra}] {Colors.stats(f'{(i/total)*100:5.1f}%')}", end="", flush=True)
+        for i in range(total + 1):
+            barra = Colors.success(PROGRESS_BAR_FULL * i) + Colors.warning(
+                PROGRESS_BAR_EMPTY * (total - i)
+            )
+            print(
+                f"\r[{barra}] {Colors.stats(f'{(i/total)*100:5.1f}%')}",
+                end="",
+                flush=True,
+            )
             time.sleep(0.04 + (0.12 if i < 5 else 0))
         print("\n")
         time.sleep(0.3)
 
         # Limpar terminal (cross-platform)
-        if os.name == 'nt':
-            os.system('cls')
+        if os.name == "nt":
+            os.system("cls")
         else:
-            os.system('clear')
+            os.system("clear")
+
     """Interface de linha de comando com elementos visuais estilizados"""
 
     @staticmethod
@@ -63,12 +73,12 @@ class CLIInterface:
                 elif escolha == "2":
                     return "banco"
                 elif escolha == "0":
-                    print(Colors.success("👋 Saindo do sistema..."))
+                    print(Colors.warning("👋 Saindo do sistema..."))
                     return "sair"
                 else:
                     print(Colors.error("❌ Opção inválida! Digite 1, 2 ou 0."))
             except KeyboardInterrupt:
-                print(Colors.success("\n👋 Saindo do sistema..."))
+                print(Colors.warning("\n👋 Saindo do sistema..."))
                 return "sair"
 
     @staticmethod
@@ -85,14 +95,15 @@ class CLIInterface:
     @staticmethod
     def mostrar_progresso_intervalo(atual, total, inicio, fim, cadastros_encontrados):
         """Exibe progresso do intervalo atual com barra visual"""
-        porcentagem = (atual / total) * 100
+        porcentagem = (atual / total) * 100 if total else 0.0
 
         # Barra de progresso colorida
         progresso_cheio = int(porcentagem // 2.5)  # 40 caracteres max
-        barra_colorida = (
-            Colors.success(PROGRESS_BAR_FULL * progresso_cheio) +
-            Colors.warning(PROGRESS_BAR_EMPTY * (40 - progresso_cheio))
-        )
+        if progresso_cheio > 40:
+            progresso_cheio = 40
+        barra_colorida = Colors.success(
+            PROGRESS_BAR_FULL * progresso_cheio
+        ) + Colors.warning(PROGRESS_BAR_EMPTY * (40 - progresso_cheio))
 
         # Status line
         status = f"[{barra_colorida}] {Colors.stats(f'{porcentagem:5.1f}%')} | "
@@ -104,14 +115,15 @@ class CLIInterface:
     @staticmethod
     def mostrar_progresso_banco(atual, total, operacao="Processando"):
         """Exibe progresso de operações de banco com barra visual"""
-        porcentagem = (atual / total) * 100
+        porcentagem = (atual / total) * 100 if total else 0.0
 
         # Barra de progresso colorida (40 caracteres max)
         progresso_cheio = int(porcentagem // 2.5)
-        barra_colorida = (
-            Colors.success(PROGRESS_BAR_FULL * progresso_cheio) +
-            Colors.warning(PROGRESS_BAR_EMPTY * (40 - progresso_cheio))
-        )
+        if progresso_cheio > 40:
+            progresso_cheio = 40
+        barra_colorida = Colors.success(
+            PROGRESS_BAR_FULL * progresso_cheio
+        ) + Colors.warning(PROGRESS_BAR_EMPTY * (40 - progresso_cheio))
 
         # Status line com cores apropriadas
         status = f"[{barra_colorida}] {Colors.success(f'{porcentagem:5.1f}%')} | "
@@ -122,8 +134,10 @@ class CLIInterface:
     @staticmethod
     def mostrar_resultado_lote(total_acumulado, total_requisicoes):
         """Exibe resultado acumulado de forma limpa"""
-        print(f"\n{Colors.success('✅')} Total acumulado: {Colors.stats(str(total_acumulado))} cadastros " +
-              f"({Colors.info(str(total_requisicoes))} requisições)")
+        print(
+            f"\n{Colors.success('✅')} Total acumulado: {Colors.stats(str(total_acumulado))} cadastros "
+            + f"({Colors.info(str(total_requisicoes))} requisições)"
+        )
 
     @staticmethod
     def mostrar_salvamento_progresso():
@@ -137,7 +151,9 @@ class CLIInterface:
 
         print(Colors.stats("📊 RESULTADOS FINAIS:"))
         print(Colors.stats(SEPARATOR_THIN))
-        print(f"  {ICONS['data']} Total extraído: {Colors.success(str(total_cadastros))} cadastros")
+        print(
+            f"  {ICONS['data']} Total extraído: {Colors.success(str(total_cadastros))} cadastros"
+        )
         print(f"  {ICONS['gear']} Requisições: {Colors.info(str(total_requisicoes))}")
         print(f"  {ICONS['time']} Tempo total: {Colors.warning(str(tempo_execucao))}")
         print(f"  {ICONS['save']} Dados salvos com metadados completos")
@@ -152,22 +168,32 @@ class CLIInterface:
 
         if codigos_info:
             print(f"\n🔢 Análise de códigos:")
-            print(f"  • Menor código: {Colors.info(str(codigos_info.get('menor_codigo', 'N/A')))}")
-            print(f"  • Maior código: {Colors.info(str(codigos_info.get('maior_codigo', 'N/A')))}")
-            print(f"  • Códigos únicos: {Colors.success(str(codigos_info.get('codigos_unicos', codigos_info.get('total', 'N/A'))))}")
-            densidade = codigos_info.get('densidade_ocupacao', 0)
+            print(
+                f"  • Menor código: {Colors.info(str(codigos_info.get('menor_codigo', 'N/A')))}"
+            )
+            print(
+                f"  • Maior código: {Colors.info(str(codigos_info.get('maior_codigo', 'N/A')))}"
+            )
+            print(
+                f"  • Códigos únicos: {Colors.success(str(codigos_info.get('codigos_unicos', codigos_info.get('total', 'N/A'))))}"
+            )
+            densidade = codigos_info.get("densidade_ocupacao", 0)
             densidade_txt = f"{densidade:.1f}%"
             print(f"  • Densidade: {Colors.warning(densidade_txt)}")
 
-        if stats.get('tipos_categoria'):
+        if stats.get("tipos_categoria"):
             print(f"\n🏷️ Distribuição por categoria:")
-            for categoria, count in stats['tipos_categoria'].items():
-                print(f"  • Categoria {Colors.info(str(categoria))}: {Colors.success(str(count))} cadastros")
+            for categoria, count in stats["tipos_categoria"].items():
+                print(
+                    f"  • Categoria {Colors.info(str(categoria))}: {Colors.success(str(count))} cadastros"
+                )
 
-        if stats.get('tipos_situacao'):
+        if stats.get("tipos_situacao"):
             print(f"\n📈 Situações cadastrais:")
-            for situacao, count in stats['tipos_situacao'].items():
-                print(f"  • Situação {Colors.info(str(situacao))}: {Colors.success(str(count))} cadastros")
+            for situacao, count in stats["tipos_situacao"].items():
+                print(
+                    f"  • Situação {Colors.info(str(situacao))}: {Colors.success(str(count))} cadastros"
+                )
 
     @staticmethod
     def mostrar_amostra_dados(cadastros, limite=3):
@@ -176,9 +202,9 @@ class CLIInterface:
         print(Colors.info(SEPARATOR_THIN))
 
         for i, cadastro in enumerate(cadastros[:limite]):
-            codigo = cadastro.get('codigo_cadastro', 'N/A')
-            situacao = cadastro.get('situacao_cadastral', 'N/A')
-            data_cadastro = cadastro.get('data_cadastro', 'N/A')
+            codigo = cadastro.get("codigo_cadastro", "N/A")
+            situacao = cadastro.get("situacao_cadastral", "N/A")
+            data_cadastro = cadastro.get("data_cadastro", "N/A")
 
             print(f"  📄 Cadastro {i+1}:")
             print(f"    • Código: {Colors.success(str(codigo))}")
@@ -205,6 +231,16 @@ class CLIInterface:
         print(Colors.warning(f"⚠️  {mensagem}"))
 
     @staticmethod
+    def mostrar_info(mensagem):
+        """Exibe mensagem informativa formatada"""
+        print(Colors.info(f"ℹ️  {mensagem}"))
+
+    @staticmethod
+    def mostrar_sucesso(mensagem):
+        """Exibe mensagem de sucesso formatada"""
+        print(Colors.success(f"✅ {mensagem}"))
+
+    @staticmethod
     def loading_spinner(texto="Processando", duracao=2):
         """Exibe spinner de loading estilizado"""
         for i in range(duracao * 10):
@@ -215,15 +251,50 @@ class CLIInterface:
 
 
 class ProgressTracker:
-    """Classe para tracking de progresso detalhado"""
+    """Classe para tracking de progresso detalhado
+    Compatível com dois modos:
+    - Modo novo: ProgressTracker(total=...)
+    - Modo antigo: ProgressTracker(total_intervalos)
+    """
 
-    def __init__(self, total_intervalos):
-        self.total_intervalos = total_intervalos
+    def __init__(self, total: int = 0, total_intervalos: int = None):
+        # Compat: se chamarem com total_intervalos, usa-o; senão usa total
+        self.total = (
+            int(total_intervalos) if total_intervalos is not None else int(total)
+        )
+        if self.total < 0:
+            self.total = 0
+
+        # Estado de progresso
+        self.atual = 0
         self.intervalos_processados = 0
         self.cadastros_totais = 0
         self.inicio_tempo = datetime.now()
         self.requisicoes_realizadas = 0
 
+    # ===== API NOVA (usada pelo CadastroService) =====
+    def atualizar(self, atual: int, extra: str = ""):
+        """Atualiza a posição atual (1..total) e imprime uma linha de status."""
+        self.atual = max(0, int(atual))
+        porcentagem = (self.atual / self.total) * 100 if self.total else 0.0
+
+        # Barra de 40 chars
+        cheio = int(porcentagem // 2.5)
+        if cheio > 40:
+            cheio = 40
+        barra = Colors.success(PROGRESS_BAR_FULL * cheio) + Colors.warning(
+            PROGRESS_BAR_EMPTY * (40 - cheio)
+        )
+
+        sufixo = f" — {extra}" if extra else ""
+        print(
+            f"\r[{barra}] {Colors.stats(f'{porcentagem:5.1f}%')}  "
+            f"{Colors.info(f'{self.atual}/{self.total}')}{sufixo}",
+            end="",
+            flush=True,
+        )
+
+    # ===== API ANTIGA (mantida por compatibilidade) =====
     def atualizar_intervalo(self, cadastros_encontrados):
         """Atualiza progresso do intervalo atual"""
         self.intervalos_processados += 1
@@ -236,4 +307,6 @@ class ProgressTracker:
 
     def obter_progresso_percentual(self):
         """Retorna progresso em percentual"""
-        return (self.intervalos_processados / self.total_intervalos) * 100
+        base = self.total if self.total else max(self.intervalos_processados, 1)
+        done = self.atual if self.total else self.intervalos_processados
+        return (done / base) * 100

@@ -48,6 +48,21 @@ class CadastroImobiliario(Base):
     enderecos = relationship("Endereco", back_populates="cadastro", cascade="all, delete-orphan")
     zoneamentos = relationship("Zoneamento", back_populates="cadastro", cascade="all, delete-orphan")
 
+    ativo = Column(Boolean, nullable=False, default=False)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Define o valor de "ativo" com base em "situacao"
+        self.ativo = self.situacao == "1"
+
+        # Define o valor de "categoria" com base em "tipo_cadastro"
+        tipo_cadastro_map = {
+            1: "terreno",
+            2: "unidade",
+            3: "rural"
+        }
+        self.categoria = tipo_cadastro_map.get(self.tipo_cadastro, "desconhecido")
+
 
 class Proprietario(Base):
     """Tabela de proprietários"""

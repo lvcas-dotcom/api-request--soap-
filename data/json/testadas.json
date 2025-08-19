@@ -1,0 +1,870 @@
+[
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "583",
+    "id_secao": "583",
+    "codigo_cadastro": "727"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "616",
+    "id_secao": "616",
+    "codigo_cadastro": "4199"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "667",
+    "id_secao": "667",
+    "codigo_cadastro": "4113"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "28.0000",
+    "codigo_secao": "1729",
+    "id_secao": "1729",
+    "codigo_cadastro": "47"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "1618",
+    "id_secao": "1618",
+    "codigo_cadastro": "2732"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "20.7000",
+    "codigo_secao": "1001",
+    "id_secao": "1001",
+    "codigo_cadastro": "493"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.1500",
+    "codigo_secao": "1023",
+    "id_secao": "1023",
+    "codigo_cadastro": "493"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "9.0000",
+    "codigo_secao": "1262",
+    "id_secao": "1262",
+    "codigo_cadastro": "1761"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "42.0000",
+    "codigo_secao": "1263",
+    "id_secao": "1263",
+    "codigo_cadastro": "1761"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "17.0000",
+    "codigo_secao": "1294",
+    "id_secao": "1294",
+    "codigo_cadastro": "1749"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "1690",
+    "id_secao": "1690",
+    "codigo_cadastro": "117"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1014",
+    "id_secao": "1014",
+    "codigo_cadastro": "854"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "18.0000",
+    "codigo_secao": "395",
+    "id_secao": "395",
+    "codigo_cadastro": "3315"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "18.0000",
+    "codigo_secao": "1021",
+    "id_secao": "1021",
+    "codigo_cadastro": "583"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "23.0000",
+    "codigo_secao": "1534",
+    "id_secao": "1534",
+    "codigo_cadastro": "778"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "23.0000",
+    "codigo_secao": "1562",
+    "id_secao": "1562",
+    "codigo_cadastro": "778"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "24.0000",
+    "codigo_secao": "1045",
+    "id_secao": "1045",
+    "codigo_cadastro": "1178"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "25.0000",
+    "codigo_secao": "1047",
+    "id_secao": "1047",
+    "codigo_cadastro": "1178"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "1606",
+    "id_secao": "1606",
+    "codigo_cadastro": "2700"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1105",
+    "id_secao": "1105",
+    "codigo_cadastro": "3979"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "25.0000",
+    "codigo_secao": "1130",
+    "id_secao": "1130",
+    "codigo_cadastro": "3979"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "599",
+    "id_secao": "599",
+    "codigo_cadastro": "4167"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1291",
+    "id_secao": "1291",
+    "codigo_cadastro": "1829"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "30.0000",
+    "codigo_secao": "1293",
+    "id_secao": "1293",
+    "codigo_cadastro": "1829"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "37.0000",
+    "codigo_secao": "359",
+    "id_secao": "359",
+    "codigo_cadastro": "2871"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "16.0000",
+    "codigo_secao": "1627",
+    "id_secao": "1627",
+    "codigo_cadastro": "2871"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "12.0000",
+    "codigo_secao": "1627",
+    "id_secao": "1627",
+    "codigo_cadastro": "2872"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "38.0000",
+    "codigo_secao": "1167",
+    "id_secao": "1167",
+    "codigo_cadastro": "2262"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "9.0000",
+    "codigo_secao": "1169",
+    "id_secao": "1169",
+    "codigo_cadastro": "2262"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "17.0000",
+    "codigo_secao": "1167",
+    "id_secao": "1167",
+    "codigo_cadastro": "2263"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "22.0000",
+    "codigo_secao": "882",
+    "id_secao": "882",
+    "codigo_cadastro": "616"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "18.0000",
+    "codigo_secao": "1184",
+    "id_secao": "1184",
+    "codigo_cadastro": "2177"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "1589",
+    "id_secao": "1589",
+    "codigo_cadastro": "2947"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "734",
+    "id_secao": "734",
+    "codigo_cadastro": "2408"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "10.0000",
+    "codigo_secao": "720",
+    "id_secao": "720",
+    "codigo_cadastro": "2271"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "9.0000",
+    "codigo_secao": "952",
+    "id_secao": "952",
+    "codigo_cadastro": "1735"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1111",
+    "id_secao": "1111",
+    "codigo_cadastro": "2100"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "33.0000",
+    "codigo_secao": "1121",
+    "id_secao": "1121",
+    "codigo_cadastro": "2100"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "1509",
+    "id_secao": "1509",
+    "codigo_cadastro": "1069"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "795",
+    "id_secao": "795",
+    "codigo_cadastro": "274"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "12.0000",
+    "codigo_secao": "144",
+    "id_secao": "144",
+    "codigo_cadastro": "1071"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "1200",
+    "id_secao": "1200",
+    "codigo_cadastro": "2455"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "9.0000",
+    "codigo_secao": "190",
+    "id_secao": "190",
+    "codigo_cadastro": "3314"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "65.0000",
+    "codigo_secao": "45",
+    "id_secao": "45",
+    "codigo_cadastro": "475"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "326.0000",
+    "codigo_secao": "209",
+    "id_secao": "209",
+    "codigo_cadastro": "3758"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "302.0000",
+    "codigo_secao": "359",
+    "id_secao": "359",
+    "codigo_cadastro": "3758"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "142",
+    "id_secao": "142",
+    "codigo_cadastro": "1648"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "707",
+    "id_secao": "707",
+    "codigo_cadastro": "2307"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "1714",
+    "id_secao": "1714",
+    "codigo_cadastro": "4512"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "16.6600",
+    "codigo_secao": "1726",
+    "id_secao": "1726",
+    "codigo_cadastro": "4512"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "12.7500",
+    "codigo_secao": "432",
+    "id_secao": "432",
+    "codigo_cadastro": "6801"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1188",
+    "id_secao": "1188",
+    "codigo_cadastro": "2476"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1267",
+    "id_secao": "1267",
+    "codigo_cadastro": "1936"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "26.0000",
+    "codigo_secao": "1262",
+    "id_secao": "1262",
+    "codigo_cadastro": "1664"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "16.0000",
+    "codigo_secao": "1288",
+    "id_secao": "1288",
+    "codigo_cadastro": "1664"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "23.0000",
+    "codigo_secao": "1588",
+    "id_secao": "1588",
+    "codigo_cadastro": "1601"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "22.0000",
+    "codigo_secao": "147",
+    "id_secao": "147",
+    "codigo_cadastro": "3046"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "10.0000",
+    "codigo_secao": "1609",
+    "id_secao": "1609",
+    "codigo_cadastro": "2636"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "757",
+    "id_secao": "757",
+    "codigo_cadastro": "1476"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1271",
+    "id_secao": "1271",
+    "codigo_cadastro": "1805"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "1493",
+    "id_secao": "1493",
+    "codigo_cadastro": "597"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "22.0000",
+    "codigo_secao": "1557",
+    "id_secao": "1557",
+    "codigo_cadastro": "597"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "1015",
+    "id_secao": "1015",
+    "codigo_cadastro": "967"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "22.0000",
+    "codigo_secao": "919",
+    "id_secao": "919",
+    "codigo_cadastro": "1023"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "35.0000",
+    "codigo_secao": "1045",
+    "id_secao": "1045",
+    "codigo_cadastro": "1023"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "957",
+    "id_secao": "957",
+    "codigo_cadastro": "1190"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "39.0000",
+    "codigo_secao": "51",
+    "id_secao": "51",
+    "codigo_cadastro": "2633"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "38.0000",
+    "codigo_secao": "1210",
+    "id_secao": "1210",
+    "codigo_cadastro": "2427"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "1230",
+    "id_secao": "1230",
+    "codigo_cadastro": "2427"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "22.0000",
+    "codigo_secao": "780",
+    "id_secao": "780",
+    "codigo_cadastro": "285"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "1177",
+    "id_secao": "1177",
+    "codigo_cadastro": "2206"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "880",
+    "id_secao": "880",
+    "codigo_cadastro": "437"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.3500",
+    "codigo_secao": "1455",
+    "id_secao": "1455",
+    "codigo_cadastro": "7798"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "33.0000",
+    "codigo_secao": "1167",
+    "id_secao": "1167",
+    "codigo_cadastro": "2131"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "1204",
+    "id_secao": "1204",
+    "codigo_cadastro": "2131"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "12.5000",
+    "codigo_secao": "193",
+    "id_secao": "193",
+    "codigo_cadastro": "8039"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "160",
+    "id_secao": "160",
+    "codigo_cadastro": "2185"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "1711",
+    "id_secao": "1711",
+    "codigo_cadastro": "156"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "781",
+    "id_secao": "781",
+    "codigo_cadastro": "380"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "1263",
+    "id_secao": "1263",
+    "codigo_cadastro": "1662"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "16.0000",
+    "codigo_secao": "1305",
+    "id_secao": "1305",
+    "codigo_cadastro": "1901"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1301",
+    "id_secao": "1301",
+    "codigo_cadastro": "1987"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "110.0000",
+    "codigo_secao": "61",
+    "id_secao": "61",
+    "codigo_cadastro": "3636"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "75.0000",
+    "codigo_secao": "1",
+    "id_secao": "1",
+    "codigo_cadastro": "1169"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "46.0000",
+    "codigo_secao": "285",
+    "id_secao": "285",
+    "codigo_cadastro": "1169"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "31",
+    "id_secao": "31",
+    "codigo_cadastro": "692"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "23.0000",
+    "codigo_secao": "359",
+    "id_secao": "359",
+    "codigo_cadastro": "692"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "31",
+    "id_secao": "31",
+    "codigo_cadastro": "693"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "23.0000",
+    "codigo_secao": "359",
+    "id_secao": "359",
+    "codigo_cadastro": "693"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "32",
+    "id_secao": "32",
+    "codigo_cadastro": "983"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "866",
+    "id_secao": "866",
+    "codigo_cadastro": "984"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "16.0000",
+    "codigo_secao": "908",
+    "id_secao": "908",
+    "codigo_cadastro": "986"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "17.0000",
+    "codigo_secao": "1515",
+    "id_secao": "1515",
+    "codigo_cadastro": "1593"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "15.0000",
+    "codigo_secao": "1393",
+    "id_secao": "1393",
+    "codigo_cadastro": "362"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1134",
+    "id_secao": "1134",
+    "codigo_cadastro": "4029"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "866",
+    "id_secao": "866",
+    "codigo_cadastro": "982"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "319",
+    "id_secao": "319",
+    "codigo_cadastro": "2715"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "1130",
+    "id_secao": "1130",
+    "codigo_cadastro": "3957"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "7.0000",
+    "codigo_secao": "795",
+    "id_secao": "795",
+    "codigo_cadastro": "254"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "160.0000",
+    "codigo_secao": "210",
+    "id_secao": "210",
+    "codigo_cadastro": "4345"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "9.0000",
+    "codigo_secao": "1609",
+    "id_secao": "1609",
+    "codigo_cadastro": "2727"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "13.0000",
+    "codigo_secao": "1294",
+    "id_secao": "1294",
+    "codigo_cadastro": "1836"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "24.0700",
+    "codigo_secao": "245",
+    "id_secao": "245",
+    "codigo_cadastro": "8223"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "656",
+    "id_secao": "656",
+    "codigo_cadastro": "4144"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "25.0000",
+    "codigo_secao": "842",
+    "id_secao": "842",
+    "codigo_cadastro": "1193"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "22.0000",
+    "codigo_secao": "1562",
+    "id_secao": "1562",
+    "codigo_cadastro": "779"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "616",
+    "id_secao": "616",
+    "codigo_cadastro": "4175"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "950",
+    "id_secao": "950",
+    "codigo_cadastro": "1857"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "24.0000",
+    "codigo_secao": "951",
+    "id_secao": "951",
+    "codigo_cadastro": "1857"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "950",
+    "id_secao": "950",
+    "codigo_cadastro": "1858"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "24.0000",
+    "codigo_secao": "951",
+    "id_secao": "951",
+    "codigo_cadastro": "1858"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "950",
+    "id_secao": "950",
+    "codigo_cadastro": "1859"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "24.0000",
+    "codigo_secao": "951",
+    "id_secao": "951",
+    "codigo_cadastro": "1859"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "950",
+    "id_secao": "950",
+    "codigo_cadastro": "1860"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "24.0000",
+    "codigo_secao": "951",
+    "id_secao": "951",
+    "codigo_cadastro": "1860"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "707",
+    "id_secao": "707",
+    "codigo_cadastro": "2291"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "14.0000",
+    "codigo_secao": "1609",
+    "id_secao": "1609",
+    "codigo_cadastro": "2680"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "11.0000",
+    "codigo_secao": "1134",
+    "id_secao": "1134",
+    "codigo_cadastro": "4014"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "12.7500",
+    "codigo_secao": "414",
+    "id_secao": "414",
+    "codigo_cadastro": "6790"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "12.0000",
+    "codigo_secao": "1106",
+    "id_secao": "1106",
+    "codigo_cadastro": "4020"
+  },
+  {
+    "numero_testada": "2",
+    "metragem": "22.0000",
+    "codigo_secao": "1491",
+    "id_secao": "1491",
+    "codigo_cadastro": "650"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "23.0000",
+    "codigo_secao": "1538",
+    "id_secao": "1538",
+    "codigo_cadastro": "650"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "12.0000",
+    "codigo_secao": "601",
+    "id_secao": "601",
+    "codigo_cadastro": "4233"
+  },
+  {
+    "numero_testada": "1",
+    "metragem": "20.0000",
+    "codigo_secao": "673",
+    "id_secao": "673",
+    "codigo_cadastro": "1681"
+  }
+]
